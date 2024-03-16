@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 from ..database import Base
 from .enums import (EmploymentEnum, ExperienceEnum, PaperWorkEnum, StatusEnum,
-                    TermsPaymentEnum, TermsRecruiter, TypesResumeEnum)
+                    TermsPaymentEnum, TermsRecruiterEnum, TypesResumeEnum)
 
 
 class AppSkill(Base):
@@ -130,7 +130,7 @@ class Application(Base):
         nullable=True
     )
     terms_recruiter = Column(
-        pgEnum(TermsRecruiter),
+        pgEnum(TermsRecruiterEnum),
         nullable=False
     )
     comments = Column(
