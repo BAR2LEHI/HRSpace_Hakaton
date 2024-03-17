@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 from ..database import Base
 from .enums import (EmploymentEnum, ExperienceEnum, PaperWorkEnum, StatusEnum,
-                    TermsPaymentEnum, TermsRecruiterEnum, TypesResumeEnum)
+                    TermsPaymentEnum, TermsRecruiterEnum, TypesResumeEnum, FormatEnum)
 
 
 class AppSkill(Base):
@@ -146,8 +146,16 @@ class Application(Base):
     __table_args__ = (
         CheckConstraint(
             'recruiters_number >= 1 AND recruiters_number <= 3',
-            name='лимит нанимаемых рекрутеров'
+            name='Лимит нанимаемых рекрутеров'
         ),
+        CheckConstraint(
+            'payment > 0',
+            name='Мин. оплата труда рекрутера'
+        ),
+        CheckConstraint(
+            'salary_from <= salary_up_to',
+            name='Максимальная планка зп не может быть меньше минимальной'
+        )
     )
 
 
@@ -166,7 +174,7 @@ class WorkFormat(Base):
     __tablename__ = 'work_format'
 
     id = Column(Integer, primary_key=True, unique=True)
-    title = Column(String, nullable=False, unique=True)
+    title = Column(pgEnum(FormatEnum), nullable=False, unique=True)
 
 
 class EmploymentStyle(Base):
