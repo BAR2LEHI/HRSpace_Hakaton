@@ -19,16 +19,16 @@
       depends_on:
         - db
 
-    nginx:
-      image: nginx:1.19.3
-      env_file: .env
-      container_name: nginx
-      volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      ports:
-      - 8000:80
-      depends_on:
-        - backend
+    # nginx:
+    #   image: nginx:1.19.3
+    #   env_file: .env
+    #   container_name: nginx
+    #   volumes:
+    #   - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    #   ports:
+    #   - 8000:80
+    #   depends_on:
+    #     - backend
 
     # redis:
     #   image: redis:7
