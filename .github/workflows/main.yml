@@ -117,8 +117,8 @@ jobs:
         script: |
           cd hr_space
           # Выполняет pull образов с Docker Hub
-          sudo docker compose -f docker-compose.production.yml pull
+          sudo docker compose -f docker-compose.prod.yml pull
           # Перезапускает все контейнеры в Docker Compose
-          sudo docker compose -f docker-compose.production.yml down
-          sudo docker compose -f docker-compose.production.yml up -d
+          sudo docker compose -f docker-compose.prod.yml down
+          sudo docker compose -f docker-compose.prod.yml up -d
           # Выполняет миграции и сбор статики
