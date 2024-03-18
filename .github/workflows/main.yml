@@ -34,7 +34,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8==6.0.0 flake8-isort==6.0.0
         pip install -r ./backend/requirements.txt
-    # Этот шаг дополним переменными для доступа к БД
+    # Этот шаг дополним переменными для доступа бд
     - name: Test with flake8 and django tests
       # Добавляем env-переменные для доступа к БД
       env:
