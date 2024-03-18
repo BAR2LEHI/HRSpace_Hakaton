@@ -89,9 +89,6 @@ jobs:
         password: U@tUwRLTNVJHR1M2
         script: |
           cd hr_space
-          # Выполняет pull образов с Docker Hub
           sudo docker compose -f docker-compose.prod.yml pull
-          # Перезапускает все контейнеры в Docker Compose
           sudo docker compose -f docker-compose.prod.yml down
           sudo docker compose -f docker-compose.prod.yml up -d
-          # Выполняет миграции и сбор статики
