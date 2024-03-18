@@ -45,7 +45,7 @@ jobs:
         # Поэтому подключаемся к 127.0.0.1:5432
         DB_HOST: db_postgre
         DB_PORT: 5432
-      # run: |
+      run:
       #   python -m flake8 src/
       #   cd src/
       #   python test \ запуск тестов
