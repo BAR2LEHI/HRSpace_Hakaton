@@ -14,6 +14,7 @@ async def create_application(db: AsyncSession,
     await db.commit()
     return 
 
+
 async def create_skill(db: AsyncSession,
                        skill: SkillSchema):
     new_skill = Skill(**skill)
