@@ -85,3 +85,5 @@ env.bak/
 venv.bak/
 
 migrations/versions
+
+.idea

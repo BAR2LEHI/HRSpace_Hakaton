@@ -1,8 +1,9 @@
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import Column, Integer, String, Boolean, Table, MetaData
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.dialects.postgresql import ENUM as pgEnum
 from enum import Enum
 
+from sqlalchemy.orm import mapped_column
 
 from ..database import Base
 
@@ -32,26 +33,3 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     is_verified = Column(
         Boolean, default=False, nullable=False
     )
-
-
-metadata = MetaData()
-
-user = Table(
-    'user',
-    metadata,
-    Column('id', Integer, primary_key=True, unique=True),
-    Column('first_name', String, nullable=False),
-    Column('last_name', String, nullable=False),
-    Column(
-        'hashed_password', String(length=1024), nullable=False
-    ),
-    Column('email', String, nullable=False, unique=True),
-    Column('role', pgEnum(RolesEnum), default='customer', nullable=False),
-    Column('is_active', Boolean, default=True, nullable=False),
-    Column(
-        'is_superuser', Boolean, default=False, nullable=False
-    ),
-    Column(
-        'is_verified', Boolean, default=False, nullable=False
-    ),
-)

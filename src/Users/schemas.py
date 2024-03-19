@@ -11,10 +11,10 @@ class UserRead(schemas.BaseUser[int]):
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
     is_verified: Optional[bool] = False
-    role: str = 'customer'
+    role: Optional[str] = 'customer'
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserCreate(schemas.BaseUserCreate):
@@ -25,4 +25,7 @@ class UserCreate(schemas.BaseUserCreate):
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
     is_verified: Optional[bool] = False
-    role: str = 'customer'
+    role: Optional[str] = 'customer'
+
+    class Config:
+        exclude = {"role"}
