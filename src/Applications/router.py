@@ -93,10 +93,9 @@ async def post_work_format(
     '/employment-style/',
     response_model=EmploymentStyleGetSchema
 )
-async def post_work_format(
+async def post_employment_style(
     employment_style: EmploymentStyleCreateSchema,
     db: AsyncSession = Depends(get_async_session)
 ):
     res = await create_employment_style(db, employment_style)
     return res
-
