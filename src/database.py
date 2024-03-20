@@ -1,5 +1,7 @@
 from typing import AsyncGenerator
 
+from fastapi import Depends
+from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
@@ -18,7 +20,8 @@ async_local_session = sessionmaker(engine, class_=AsyncSession,
 # Базовый класс SQLAlchemy для последующего создания моделей
 Base = declarative_base()
 
-# Асинхронный генератор, который при вызове отдаёт готовую асинх. сессию
+
+# Асинхронный генератор, который при вызове отдаёт готовую асинх сессию
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_local_session() as session:
         yield session

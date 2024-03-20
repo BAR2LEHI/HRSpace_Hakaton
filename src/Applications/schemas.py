@@ -3,7 +3,9 @@ from typing import List, Optional, Annotated
 from pytz import timezone
 from pydantic import BaseModel, model_validator, conint
 
-from .enums import StatusEnum, FormatEnum, EmploymentEnum, PaperWorkEnum, ExperienceEnum, TypesResumeEnum, TermsPaymentEnum, TermsRecruiterEnum
+from .enums import (StatusEnum, FormatEnum, EmploymentEnum,
+                    PaperWorkEnum, ExperienceEnum, TypesResumeEnum,
+                    TermsPaymentEnum, TermsRecruiterEnum)
 
 
 class WorkFormatSchema(BaseModel):

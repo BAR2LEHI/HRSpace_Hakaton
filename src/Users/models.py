@@ -1,6 +1,9 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.dialects.postgresql import ENUM as pgEnum
 from enum import Enum
+
+from sqlalchemy.orm import mapped_column
 
 from ..database import Base
 
@@ -11,12 +14,22 @@ class RolesEnum(str, Enum):
     admin = 'admin'
 
 
-class User(Base):
+class User(SQLAlchemyBaseUserTable[int], Base):
 
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True, unique=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
+    hashed_password = Column(
+        String(length=1024), nullable=False
+    )
     email = Column(String, nullable=False, unique=True)
-    role = Column(pgEnum(RolesEnum), nullable=False)
+    role = Column(pgEnum(RolesEnum), default='customer', nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
+    is_superuser = Column(
+        Boolean, default=False, nullable=False
+    )
+    is_verified = Column(
+        Boolean, default=False, nullable=False
+    )
