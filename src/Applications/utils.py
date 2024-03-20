@@ -15,7 +15,6 @@ async def create_skill(db: AsyncSession,
         name=skill_name
     )
     db.add(new_skill)
-    await db.commit()
     return new_skill
 
 
