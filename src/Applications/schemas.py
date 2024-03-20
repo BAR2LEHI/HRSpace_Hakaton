@@ -1,48 +1,44 @@
 from datetime import datetime
-from typing import List, Optional, Annotated
-from pytz import timezone
-from pydantic import BaseModel, model_validator, conint
+from typing import Annotated, List, Optional
 
-from .enums import (StatusEnum, FormatEnum, EmploymentEnum,
-                    PaperWorkEnum, ExperienceEnum, TypesResumeEnum,
-                    TermsPaymentEnum, TermsRecruiterEnum)
+from pydantic import BaseModel, conint, model_validator
 
-
-class WorkFormatSchema(BaseModel):
-    """Схема типа формата работы"""
-    id: int
-    title: str
+from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
+                    TermsPaymentEnum, TermsRecruiterEnum, TypesResumeEnum)
 
 
-class SkillSchema(BaseModel):
+class SkillCreateSchema(BaseModel):
     """Схема навыка"""
-    id: int
     name: str
 
 
-class WorkFormatSchema(BaseModel):
-    """Схема """
+class SkillGetSchema(SkillCreateSchema):
     id: int
+
+
+class WorkFormatCreateSchema(BaseModel):
+    """Схема """
     title: FormatEnum
 
 
-class EmploymentStyleSchema(BaseModel):
-    """Схема типа занятости соискателя"""
+class WorkFormatGetSchema(WorkFormatCreateSchema):
     id: int
+
+
+class EmploymentStyleCreateSchema(BaseModel):
+    """Схема типа занятости соискателя"""
     name: EmploymentEnum
 
 
-class ApplicationSchema(BaseModel):
-    """Схема заявки"""
+class EmploymentStyleGetSchema(EmploymentStyleCreateSchema):
     id: int
+
+
+class ApplicationBaseSchema(BaseModel):
     title: str
-    status: StatusEnum
-    skills: Optional[List[SkillSchema]] | SkillSchema = None
     company_specialization: str
-    work_format: List[WorkFormatSchema] | WorkFormatSchema
     address: Optional[str] = None
     experience: ExperienceEnum
-    employment: List[EmploymentStyleSchema] | EmploymentStyleSchema
     salary_from: Optional[int] = None
     salary_up_to: Optional[int] = None
     paperwork: PaperWorkEnum
@@ -57,7 +53,6 @@ class ApplicationSchema(BaseModel):
     recruiter_responsibilities: Optional[str] = None
     resume_type: TypesResumeEnum
     terms_recruiter: TermsRecruiterEnum
-    comments: Optional[str] = None
     stop_list_employee: Optional[str] = None
 
     @model_validator(mode='after')
@@ -65,6 +60,26 @@ class ApplicationSchema(BaseModel):
         if self.salary_from > self.salary_up_to:
             raise ValueError('Максимальная планка зарплаты не может быть больше минимальной')
         return self
+    
+    class config:
+        exclude = {'status'}
+
+
+class ApplicationGetSchema(ApplicationBaseSchema):
+    """Схема заявки"""
+    id: int
+    skills: Optional[List[SkillGetSchema]] = None
+    work_format: List[WorkFormatGetSchema]
+    employment: List[EmploymentStyleGetSchema]
+
+    class config:
+        orm_mode = True
+
+
+class ApplicationCreateSchema(ApplicationBaseSchema):
+    skills: List[SkillCreateSchema] | None
+    work_format: List[WorkFormatCreateSchema]
+    employment: List[EmploymentStyleCreateSchema]
 
     # @model_validator(mode='after')
     # def check_date(self):

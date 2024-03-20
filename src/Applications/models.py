@@ -4,8 +4,9 @@ from sqlalchemy.dialects.postgresql import ENUM as pgEnum
 from sqlalchemy.orm import relationship
 
 from ..database import Base
-from .enums import (EmploymentEnum, ExperienceEnum, PaperWorkEnum, StatusEnum,
-                    TermsPaymentEnum, TermsRecruiterEnum, TypesResumeEnum, FormatEnum)
+from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
+                    StatusEnum, TermsPaymentEnum, TermsRecruiterEnum,
+                    TypesResumeEnum)
 
 
 class AppSkill(Base):
@@ -129,6 +130,10 @@ class Application(Base):
         pgEnum(TypesResumeEnum),
         nullable=True
     )
+    recruiter_responsibilities = Column(
+        String,
+        nullable=True
+    )
     terms_recruiter = Column(
         pgEnum(TermsRecruiterEnum),
         nullable=False
@@ -163,8 +168,16 @@ class Skill(Base):
 
     __tablename__ = 'skill'
 
-    id = Column(Integer, primary_key=True, unique=True)
-    name = Column(String, nullable=False)
+    id = Column(
+        Integer, 
+        primary_key=True, 
+        unique=True
+    )
+    name = Column(
+        String, 
+        unique=True, 
+        nullable=False
+    )
 
 
 class WorkFormat(Base):
@@ -172,8 +185,16 @@ class WorkFormat(Base):
 
     __tablename__ = 'work_format'
 
-    id = Column(Integer, primary_key=True, unique=True)
-    title = Column(pgEnum(FormatEnum), nullable=False, unique=True)
+    id = Column(
+        Integer, 
+        primary_key=True, 
+        unique=True
+    )
+    title = Column(
+        pgEnum(FormatEnum), 
+        nullable=False, 
+        unique=True
+    )
 
 
 class EmploymentStyle(Base):
@@ -181,5 +202,14 @@ class EmploymentStyle(Base):
 
     __tablename__ = 'employment'
 
-    id = Column(Integer, primary_key=True, unique=True)
-    name = Column(pgEnum(EmploymentEnum), nullable=True, unique=True)
+    id = Column(
+        Integer, 
+        primary_key=True, 
+        unique=True
+    )
+    name = Column(
+        pgEnum(EmploymentEnum), 
+        nullable=True, 
+        unique=True
+    )
+
