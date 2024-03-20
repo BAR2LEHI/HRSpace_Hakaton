@@ -108,3 +108,4 @@ async def create_application(db: AsyncSession,
     db.add(new_app)
     await db.commit()
     return new_app
+

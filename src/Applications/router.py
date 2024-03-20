@@ -76,7 +76,7 @@ async def post_skill(
     res = await create_skill(db, skill)
     return res
 
-
+  
 @router_app.post(
     '/work-format/',
     response_model=WorkFormatGetSchema
@@ -99,3 +99,4 @@ async def post_work_format(
 ):
     res = await create_employment_style(db, employment_style)
     return res
+
