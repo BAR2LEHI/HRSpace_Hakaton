@@ -18,7 +18,8 @@ async_local_session = sessionmaker(engine, class_=AsyncSession,
 # Базовый класс SQLAlchemy для последующего создания моделей
 Base = declarative_base()
 
-# Асинхронный генератор, который при вызове отдаёт готовую асинх. сессию
+
+# Асинхронный генератор, который при вызове отдаёт готовую асинх сессию
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_local_session() as session:
         yield session

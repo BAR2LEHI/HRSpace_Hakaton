@@ -4,8 +4,9 @@ from sqlalchemy.dialects.postgresql import ENUM as pgEnum
 from sqlalchemy.orm import relationship
 
 from ..database import Base
-from .enums import (EmploymentEnum, ExperienceEnum, PaperWorkEnum, StatusEnum,
-                    TermsPaymentEnum, TermsRecruiterEnum, TypesResumeEnum, FormatEnum)
+from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
+                    StatusEnum, TermsPaymentEnum, TermsRecruiterEnum,
+                    TypesResumeEnum)
 
 
 class AppSkill(Base):
@@ -41,76 +42,76 @@ class Application(Base):
     __tablename__ = 'application'
 
     id = Column(
-        Integer, 
-        primary_key=True, 
+        Integer,
+        primary_key=True,
         unique=True
     )
     title = Column(
-        String, 
+        String,
         nullable=False
     )
     status = Column(
-        pgEnum(StatusEnum), 
+        pgEnum(StatusEnum),
         nullable=True
     )
     skills = relationship(
-        'Skill', 
+        'Skill',
         secondary='skill_to_application'
     )
     company_specialization = Column(
-        String, 
+        String,
         nullable=False
     )
     work_format = relationship(
-        'WorkFormat', 
+        'WorkFormat',
         secondary='format_to_application'
     )
     address = Column(
-        String, 
+        String,
         nullable=True
     )
     experience = Column(
-        pgEnum(ExperienceEnum), 
+        pgEnum(ExperienceEnum),
         nullable=False
     )
     employment = relationship(
-        'EmploymentStyle', 
+        'EmploymentStyle',
         secondary='employment_to_application'
     )
     salary_from = Column(
-        Integer, 
+        Integer,
         nullable=True
     )
     salary_up_to = Column(
-        Integer, 
+        Integer,
         nullable=True
     )
     paperwork = Column(
-        pgEnum(PaperWorkEnum), 
+        pgEnum(PaperWorkEnum),
         nullable=False
     )
     responsibilities = Column(
-        String, 
+        String,
         nullable=True
     )
     requirements = Column(
-        String, 
+        String,
         nullable=True
     )
     conditions = Column(
-        String, 
+        String,
         nullable=True
     )
     payment = Column(
-        Integer, 
+        Integer,
         nullable=False
     )
     terms_payment = Column(
-        pgEnum(TermsPaymentEnum), 
+        pgEnum(TermsPaymentEnum),
         nullable=False
     )
     recruiters_number = Column(
-        Integer, 
+        Integer,
         nullable=False
     )
     resume_showing_date = Column(
@@ -122,11 +123,15 @@ class Application(Base):
         nullable=False
     )
     recruiter_responsibilities = Column(
-        String, 
+        String,
         nullable=True
     )
     resume_type = Column(
         pgEnum(TypesResumeEnum),
+        nullable=True
+    )
+    recruiter_responsibilities = Column(
+        String,
         nullable=True
     )
     terms_recruiter = Column(
@@ -141,7 +146,6 @@ class Application(Base):
         String,
         nullable=True
     )
-
 
     __table_args__ = (
         CheckConstraint(
@@ -164,8 +168,16 @@ class Skill(Base):
 
     __tablename__ = 'skill'
 
-    id = Column(Integer, primary_key=True, unique=True)
-    name = Column(String, nullable=False)
+    id = Column(
+        Integer,
+        primary_key=True,
+        unique=True
+    )
+    name = Column(
+        String,
+        unique=True,
+        nullable=False
+    )
 
 
 class WorkFormat(Base):
@@ -173,8 +185,16 @@ class WorkFormat(Base):
 
     __tablename__ = 'work_format'
 
-    id = Column(Integer, primary_key=True, unique=True)
-    title = Column(pgEnum(FormatEnum), nullable=False, unique=True)
+    id = Column(
+        Integer,
+        primary_key=True,
+        unique=True
+    )
+    title = Column(
+        pgEnum(FormatEnum),
+        nullable=False,
+        unique=True
+    )
 
 
 class EmploymentStyle(Base):
@@ -182,5 +202,13 @@ class EmploymentStyle(Base):
 
     __tablename__ = 'employment'
 
-    id = Column(Integer, primary_key=True, unique=True)
-    name = Column(pgEnum(EmploymentEnum), nullable=True, unique=True)
+    id = Column(
+        Integer,
+        primary_key=True,
+        unique=True
+    )
+    name = Column(
+        pgEnum(EmploymentEnum),
+        nullable=True,
+        unique=True
+    )

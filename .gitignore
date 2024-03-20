@@ -1,4 +1,3 @@
-.workflows
 __pycache__/
 *.py[cod]
 *$py.class
@@ -84,3 +83,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+migrations/versions
+
+.idea

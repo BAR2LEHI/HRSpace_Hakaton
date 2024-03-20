@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from .Applications.router import router_app
-from .Users.router import router_user
-
+from .Users.router import router_user, router_user_register
 
 app = FastAPI(
     title='HRSpace',
@@ -12,6 +11,14 @@ app = FastAPI(
     }
 )
 
-
 app.include_router(router_app)
-app.include_router(router_user)
+app.include_router(
+    router_user,
+    prefix="/auth/jwt",
+    tags=["auth"]
+)
+app.include_router(
+    router_user_register,
+    prefix="/auth",
+    tags=["auth"]
+)
