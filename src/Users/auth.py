@@ -1,6 +1,5 @@
-from fastapi_users.authentication import CookieTransport
-from fastapi_users.authentication import AuthenticationBackend, JWTStrategy
-
+from fastapi_users.authentication import (AuthenticationBackend,
+                                          CookieTransport, JWTStrategy)
 
 cookie_transport = CookieTransport(cookie_max_age=3600)
 

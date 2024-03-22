@@ -11,6 +11,7 @@ from .schemas import (ApplicationCreateSchema, EmploymentStyleCreateSchema,
 
 async def create_skill(db: AsyncSession,
                        skill_name: str):
+    """Создание скилла"""
     new_skill = Skill(
         name=skill_name
     )
@@ -20,6 +21,7 @@ async def create_skill(db: AsyncSession,
 
 async def create_work_format(db: AsyncSession,
                              work_format: WorkFormatCreateSchema):
+    """Тех. util для создания формата работы"""
     new_work_format = WorkFormat(
         **work_format.model_dump()
     )
@@ -30,6 +32,7 @@ async def create_work_format(db: AsyncSession,
 
 async def create_employment_style(db: AsyncSession,
                                   employment_style: EmploymentStyleCreateSchema):
+    """Тех. util для создания вида занятости"""
     new_emp_style = EmploymentStyle(
         **employment_style.model_dump()
     )
@@ -40,6 +43,7 @@ async def create_employment_style(db: AsyncSession,
 
 async def get_skills(db: AsyncSession,
                     skill_names: List[SkillCreateSchema]):
+    """Получение скиллов по переданному списку их наименований"""
     names = [
         skill['name'] for skill 
         in skill_names
@@ -55,6 +59,7 @@ async def get_skills(db: AsyncSession,
 
 async def get_work_format(db: AsyncSession,
                           work_format_names: List[WorkFormatCreateSchema]):
+    """Получение форматов работы соискателя"""
     wf_names = [wf['title'] for wf in work_format_names]
     stmt = select(
         WorkFormat
@@ -67,6 +72,7 @@ async def get_work_format(db: AsyncSession,
 
 async def get_employment_style(db: AsyncSession,
                                empl_style_names: List[EmploymentStyleCreateSchema]):
+    """Получение видов занятости соискателя"""
     empl_stl_names = [emp['name'] for emp in empl_style_names]
     stmt = select(
         EmploymentStyle
@@ -79,6 +85,7 @@ async def get_employment_style(db: AsyncSession,
 
 async def get_or_create_skill(db: AsyncSession,
                               skill_names: List[str]):
+    """Получение и создание скиллов"""
     existing_skills = await get_skills(db, skill_names)
     existing_skills_names = [
         skill.name for skill in existing_skills
@@ -91,6 +98,23 @@ async def get_or_create_skill(db: AsyncSession,
     created_skills = await asyncio.gather(*tasks)
     existing_skills.extend(created_skills)
     return existing_skills
+
+
+async def get_applications_db(db: AsyncSession):
+    stmt = select(Application).options()
+    apps = await db.execute(stmt)
+    return apps.scalars().unique().all()
+
+
+async def get_app_by_id(db: AsyncSession,
+                        app_id: int):
+    stmt = select(
+        Application
+    ).where(
+        Application.id == app_id
+    )
+    app = await db.execute(stmt)
+    return app.scalars().unique().first()
 
 
 async def create_application(db: AsyncSession,
