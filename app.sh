@@ -1,5 +1,8 @@
 #!/bin/sh
 
+
+# RUN chmod a+x *.sh
+
 # alembic current
 
 # alembic revision --autogenerate -m "migration"
