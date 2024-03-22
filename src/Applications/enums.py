@@ -28,7 +28,7 @@ class ExperienceEnum(str, Enum):
 
 class EmploymentEnum(str, Enum):
     """Список доступного выбора занятости"""
-    full_time ='full_time'
+    full_time = 'full_time'
     part_time = 'part_time'
     project_activities = 'project_activities'
 

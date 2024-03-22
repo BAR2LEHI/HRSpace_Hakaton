@@ -8,33 +8,37 @@ from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
 
 
 class SkillCreateSchema(BaseModel):
-    """Схема навыка"""
+    """Схема для создания навыка"""
     name: str
 
 
 class SkillGetSchema(SkillCreateSchema):
+    """Схема для получения навыка"""
     id: int
 
 
 class WorkFormatCreateSchema(BaseModel):
-    """Схема """
+    """Схема создания формата работы"""
     title: FormatEnum
 
 
 class WorkFormatGetSchema(WorkFormatCreateSchema):
+    """Схема для получения формата работы"""
     id: int
 
 
 class EmploymentStyleCreateSchema(BaseModel):
-    """Схема типа занятости соискателя"""
+    """Схема создания типа занятости соискателя"""
     name: EmploymentEnum
 
 
 class EmploymentStyleGetSchema(EmploymentStyleCreateSchema):
+    """Схема получения типа занятости соискателя"""
     id: int
 
 
 class ApplicationBaseSchema(BaseModel):
+    """Базовая схема заявки"""
     title: str
     company_specialization: str
     address: Optional[str] = None
@@ -66,7 +70,7 @@ class ApplicationBaseSchema(BaseModel):
 
 
 class ApplicationGetSchema(ApplicationBaseSchema):
-    """Схема заявки"""
+    """Схема отображения заявки"""
     id: int
     skills: Optional[List[SkillGetSchema]] = None
     work_format: List[WorkFormatGetSchema]
@@ -77,6 +81,7 @@ class ApplicationGetSchema(ApplicationBaseSchema):
 
 
 class ApplicationCreateSchema(ApplicationBaseSchema):
+    """Схема для создания заявки"""
     skills: List[SkillCreateSchema] | None
     work_format: List[WorkFormatCreateSchema]
     employment: List[EmploymentStyleCreateSchema]

@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, status
+from fastapi_cache.decorator import cache
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import get_async_session
@@ -9,12 +10,9 @@ from .schemas import (ApplicationCreateSchema, ApplicationGetSchema,
                       SkillCreateSchema, SkillGetSchema,
                       WorkFormatCreateSchema, WorkFormatGetSchema)
 from .utils import (create_application, create_employment_style, create_skill,
-                    create_work_format)
+                    create_work_format, get_app_by_id, get_applications_db)
 
-router_app = APIRouter(
-    prefix='/applications',
-    tags=['Applications',]
-)
+router_app = APIRouter()
 
 
 @router_app.get(
@@ -22,10 +20,12 @@ router_app = APIRouter(
     response_model=List[ApplicationGetSchema],
     status_code=status.HTTP_200_OK
 )
+@cache(expire=360)
 async def get_applications(
     db: AsyncSession = Depends(get_async_session),
 ):
-    pass
+    all_apps = await get_applications_db(db)
+    return all_apps
 
 
 @router_app.get(
@@ -33,11 +33,13 @@ async def get_applications(
     response_model=ApplicationGetSchema,
     status_code=status.HTTP_200_OK
 )
+@cache(expire=360)
 async def get_one_application(
     app_id: int,
     db: AsyncSession = Depends(get_async_session)
 ):
-    pass
+    app = await get_app_by_id(db, app_id)
+    return app
 
 
 @router_app.post(

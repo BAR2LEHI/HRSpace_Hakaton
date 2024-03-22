@@ -7,3 +7,5 @@ python-dotenv==1.0.1
 alembic-postgresql-enum==1.1.2
 fastapi-users==13.0.0
 fastapi-users-db-sqlalchemy==6.0.1
+redis==4.6.0
+fastapi-cache2==0.2.1

@@ -14,8 +14,16 @@ class AppSkill(Base):
 
     __tablename__ = 'skill_to_application'
 
-    application_id = Column(Integer, ForeignKey('application.id'), primary_key=True)
-    skill_id = Column(Integer, ForeignKey('skill.id'), primary_key=True)
+    application_id = Column(
+        Integer,
+        ForeignKey('application.id'),
+        primary_key=True
+    )
+    skill_id = Column(
+        Integer,
+        ForeignKey('skill.id'),
+        primary_key=True
+    )
 
 
 class AppFormat(Base):
@@ -23,8 +31,16 @@ class AppFormat(Base):
 
     __tablename__ = 'format_to_application'
 
-    application_id = Column(Integer, ForeignKey('application.id'), primary_key=True)
-    format_id = Column(Integer, ForeignKey('work_format.id'), primary_key=True)
+    application_id = Column(
+        Integer,
+        ForeignKey('application.id'),
+        primary_key=True
+    )
+    format_id = Column(
+        Integer,
+        ForeignKey('work_format.id'),
+        primary_key=True
+    )
 
 
 class AppEmployment(Base):
@@ -32,8 +48,16 @@ class AppEmployment(Base):
 
     __tablename__ = 'employment_to_application'
 
-    application_id = Column(Integer, ForeignKey('application.id'), primary_key=True)
-    employment_id = Column(Integer, ForeignKey('employment.id'), primary_key=True)
+    application_id = Column(
+        Integer,
+        ForeignKey('application.id'),
+        primary_key=True
+    )
+    employment_id = Column(
+        Integer,
+        ForeignKey('employment.id'),
+        primary_key=True
+    )
 
 
 class Application(Base):
@@ -56,7 +80,8 @@ class Application(Base):
     )
     skills = relationship(
         'Skill',
-        secondary='skill_to_application'
+        secondary='skill_to_application',
+        lazy='joined'
     )
     company_specialization = Column(
         String,
@@ -64,7 +89,8 @@ class Application(Base):
     )
     work_format = relationship(
         'WorkFormat',
-        secondary='format_to_application'
+        secondary='format_to_application',
+        lazy='joined'
     )
     address = Column(
         String,
@@ -76,7 +102,8 @@ class Application(Base):
     )
     employment = relationship(
         'EmploymentStyle',
-        secondary='employment_to_application'
+        secondary='employment_to_application',
+        lazy='joined'
     )
     salary_from = Column(
         Integer,
