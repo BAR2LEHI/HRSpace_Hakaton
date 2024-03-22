@@ -92,7 +92,3 @@ jobs:
           sudo docker compose -f docker-compose.prod.yml pull
           sudo docker compose -f docker-compose.prod.yml down
           sudo docker compose -f docker-compose.prod.yml up -d
-
-          sudo docker exec -it backend_app mkdir migrations/versions
-          sudo docker exec -it backend_app alembic revision --autogenerate -m "MIGRATE"
-          sudo docker exec -it backend_app alembic upgrade head
