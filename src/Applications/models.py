@@ -85,7 +85,7 @@ class Application(Base):
     )
     company_specialization = Column(
         String,
-        nullable=False
+        nullable=True
     )
     work_format = relationship(
         'WorkFormat',
