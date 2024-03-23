@@ -18,6 +18,14 @@
       depends_on:
         - db
 
+    frontend:
+      image:
+        dockerfile: Dockerfile
+      volumes:
+        - /frontend/:/app/build
+      depends_on:
+        - backend
+
     nginx:
       image: nginx:1.19.3
       env_file: .env

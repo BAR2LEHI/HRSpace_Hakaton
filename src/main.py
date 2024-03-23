@@ -13,13 +13,14 @@ from .Users.router import router_user, router_user_register
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     FastAPICache.init(
-        RedisBackend(redis), 
+        RedisBackend(redis),
         prefix='fastapi-cache'
     )
     yield
 
 
 app = FastAPI(
+    root_path="/api",
     lifespan=lifespan,
     title='HRSpace',
     version='0.0.1',
