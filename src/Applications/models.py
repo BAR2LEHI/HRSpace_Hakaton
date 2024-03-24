@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from ..database import Base
 from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
                     StatusEnum, TermsPaymentEnum, TermsRecruiterEnum,
-                    TypesResumeEnum)
+                    TypesResumeEnum, ConditionsEnum)
 
 
 class AppSkill(Base):
@@ -60,6 +60,23 @@ class AppEmployment(Base):
     )
 
 
+class AppCondition(Base):
+    """Таблица ассоциации условия для соискателя и заявки"""
+
+    __tablename__ = 'condition_to_application'
+
+    condition_id = Column(
+        Integer,
+        ForeignKey('condition.id'),
+        primary_key=True
+    )
+    application_id = Column(
+        Integer, 
+        ForeignKey('application.id'), 
+        primary_key=True
+    )
+
+
 class Application(Base):
     """Модель заявки"""
 
@@ -81,7 +98,7 @@ class Application(Base):
     skills = relationship(
         'Skill',
         secondary='skill_to_application',
-        lazy='joined'
+        lazy='subquery'
     )
     company_specialization = Column(
         String,
@@ -90,7 +107,7 @@ class Application(Base):
     work_format = relationship(
         'WorkFormat',
         secondary='format_to_application',
-        lazy='joined'
+        lazy='subquery'
     )
     address = Column(
         String,
@@ -103,7 +120,7 @@ class Application(Base):
     employment = relationship(
         'EmploymentStyle',
         secondary='employment_to_application',
-        lazy='joined'
+        lazy='subquery'
     )
     salary_from = Column(
         Integer,
@@ -125,9 +142,10 @@ class Application(Base):
         String,
         nullable=True
     )
-    conditions = Column(
-        String,
-        nullable=True
+    conditions = relationship(
+        'Condition',
+        secondary='condition_to_application',
+        lazy='subquery'
     )
     payment = Column(
         Integer,
@@ -187,6 +205,23 @@ class Application(Base):
             'salary_from <= salary_up_to',
             name='Максимальная планка зп не может быть меньше минимальной'
         )
+    )
+
+
+class Condition(Base):
+    """Модель условия для соискателя"""
+
+    __tablename__ = 'condition'
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        unique=True
+    )
+    name = Column(
+        pgEnum(ConditionsEnum),
+        unique=True, 
+        nullable=False
     )
 
 

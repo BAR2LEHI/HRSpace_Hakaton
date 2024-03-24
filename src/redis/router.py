@@ -4,7 +4,9 @@ from typing import List
 from fastapi import APIRouter
 from fastapi_cache.decorator import cache
 
-from src.redis import redis
+from .redis import redis
+from .utils import load_data_to_redis
+
 
 directory_router = APIRouter()
 
@@ -35,5 +37,13 @@ async def get_directory_job_title():
 )
 @cache(expire=360)
 async def get_directory_specialization():
-    specs = await redis.get('specs')
+    specs = await redis.get('specialization')
     return json.loads(specs)
+
+
+@directory_router.post(
+    '/load_data/'
+)
+async def load_data():
+    await load_data_to_redis()
+    return {'detail': 'Данные успешно загружены'}

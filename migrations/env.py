@@ -7,7 +7,7 @@ from sqlalchemy import pool
 from alembic import context
 from src.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER
 from src.database import Base
-from src.Applications.models import Application
+from src.Applications.models import Application, Condition, Skill, EmploymentStyle, WorkFormat
 from src.Users.models import User
 
 config = context.config

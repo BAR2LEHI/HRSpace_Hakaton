@@ -43,8 +43,8 @@ async def get_one_application(
 
 
 @router_app.post(
-    '/', 
-    response_model=ApplicationGetSchema, 
+    '/',
+    response_model=ApplicationGetSchema,
     status_code=status.HTTP_201_CREATED
 )
 async def post_application(
