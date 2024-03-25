@@ -13,7 +13,7 @@ from .Users.router import router_user, router_user_register
 from fastapi.middleware.cors import CORSMiddleware
 from .Admin.auth import authentication_backend
 
-from .Applications.exceptions import NoApplicationExist, NoApplicationsExist
+from .Applications.exceptions import NoApplicationExist
 from .database import engine
 from .Admin.models import (
     UserAdmin, SkillAdmin, ConditionAdmin,
@@ -87,21 +87,14 @@ app.include_router(
 
 
 @app.exception_handler(NoApplicationExist)
-async def no_application_handler(request: Request, exc: NoApplicationExist):
+async def app_does_not_exist_handler(
+    request: Request,
+    exc: NoApplicationExist
+):
     return JSONResponse(
         status_code=404,
         content={
-            'detail':f'Заявки с id={exc.id} не существует.'
-        }
-    )
-
-
-@app.exception_handler(NoApplicationsExist)
-async def no_applications_handler(request: Request, exc: NoApplicationsExist):
-    return JSONResponse(
-        status_code=404,
-        content={
-            'detail':'В базе данных ещё нет заявок.'
+            'detail': exc.name
         }
     )
 

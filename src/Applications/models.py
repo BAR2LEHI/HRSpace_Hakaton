@@ -16,12 +16,12 @@ class AppSkill(Base):
 
     application_id = Column(
         Integer,
-        ForeignKey('application.id'),
+        ForeignKey('application.id', ondelete='CASCADE'),
         primary_key=True
     )
     skill_id = Column(
         Integer,
-        ForeignKey('skill.id'),
+        ForeignKey('skill.id', ondelete='CASCADE'),
         primary_key=True
     )
 
@@ -33,13 +33,13 @@ class AppFormat(Base):
 
     application_id = Column(
         Integer,
-        ForeignKey('application.id'),
+        ForeignKey('application.id', ondelete='CASCADE'),
         primary_key=True
     )
     format_id = Column(
         Integer,
-        ForeignKey('work_format.id'),
-        primary_key=True
+        ForeignKey('work_format.id', ondelete='CASCADE'),
+        primary_key=True,
     )
 
 
@@ -50,12 +50,12 @@ class AppEmployment(Base):
 
     application_id = Column(
         Integer,
-        ForeignKey('application.id'),
-        primary_key=True
+        ForeignKey('application.id', ondelete='CASCADE'),
+        primary_key=True,
     )
     employment_id = Column(
         Integer,
-        ForeignKey('employment.id'),
+        ForeignKey('employment.id', ondelete='CASCADE'),
         primary_key=True
     )
 
@@ -67,12 +67,12 @@ class AppCondition(Base):
 
     condition_id = Column(
         Integer,
-        ForeignKey('condition.id'),
-        primary_key=True
+        ForeignKey('condition.id', ondelete='CASCADE'),
+        primary_key=True,
     )
     application_id = Column(
         Integer,
-        ForeignKey('application.id'),
+        ForeignKey('application.id', ondelete='CASCADE'),
         primary_key=True
     )
 
@@ -141,7 +141,7 @@ class Application(Base):
     conditions = relationship(
         'Condition',
         secondary='condition_to_application',
-        lazy='subquery'
+        lazy='subquery',
     )
     payment = Column(
         Integer,

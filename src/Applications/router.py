@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, status
 from fastapi_cache.decorator import cache
 from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi.responses import JSONResponse
 
 from ..database import get_async_session
 from .schemas import (ApplicationCreateSchema, ApplicationGetSchema,
@@ -10,8 +11,8 @@ from .schemas import (ApplicationCreateSchema, ApplicationGetSchema,
                       SkillCreateSchema, SkillGetSchema,
                       WorkFormatCreateSchema, WorkFormatGetSchema)
 from .utils import (create_application, create_employment_style, create_skill,
-                    create_work_format, get_app_by_id, get_applications_db)
-from .exceptions import NoApplicationExist, NoApplicationsExist
+                    create_work_format, get_app_by_id, get_applications_db, delete_app)
+from .exceptions import NoApplicationExist
 
 
 router_app = APIRouter()
@@ -28,7 +29,9 @@ async def get_applications(
 ):
     all_apps = await get_applications_db(db)
     if not all_apps:
-        raise NoApplicationsExist()
+        raise NoApplicationExist(
+            name='Нет существующих заявок.'
+        )
     return all_apps
 
 
@@ -44,7 +47,9 @@ async def get_one_application(
 ):
     app = await get_app_by_id(db, app_id)
     if not app:
-        raise NoApplicationExist(app_id)
+        raise NoApplicationExist(
+            name=f'Заявка с id={app_id} не существует.'
+        )
     return app
 
 
@@ -68,7 +73,11 @@ async def delete_application(
     app_id: int,
     db: AsyncSession = Depends(get_async_session)
 ):
-    pass
+    res = await delete_app(db, app_id)
+    return JSONResponse(content={
+        'detail': f'Заявка с id={app_id} успешно удалена'
+        })
+
 
 @router_app.put(
     '/{app_id}/',
