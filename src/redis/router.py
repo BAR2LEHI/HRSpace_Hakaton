@@ -39,7 +39,7 @@ async def get_directory_job_title():
         raise NoConnectionWithRedis(
             name='Нет соединения с Redis'
         )
-    return {'job_titles': json.loads(job_titles)}
+    return json.loads(job_titles)
 
 
 @directory_router.get(
