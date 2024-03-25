@@ -115,7 +115,7 @@ class Application(Base):
     )
     experience = Column(
         pgEnum(ExperienceEnum),
-        nullable=True
+        nullable=False
     )
     employment = relationship(
         'EmploymentStyle',
@@ -220,6 +220,9 @@ class Condition(Base):
         nullable=False
     )
 
+    def __str__(self):
+        return self.name.name
+
 
 class Skill(Base):
     """Модель профессионального навыка"""
@@ -236,6 +239,9 @@ class Skill(Base):
         unique=True, 
         nullable=False
     )
+
+    def __str__(self):
+        return self.name
 
 
 class WorkFormat(Base):
@@ -254,6 +260,9 @@ class WorkFormat(Base):
         unique=True
     )
 
+    def __str__(self):
+        return self.title.name
+
 
 class EmploymentStyle(Base):
     """Модель занятости"""
@@ -271,3 +280,5 @@ class EmploymentStyle(Base):
         unique=True
     )
 
+    def __str__(self):
+        return self.name

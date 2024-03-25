@@ -82,7 +82,7 @@ class ApplicationGetSchema(ApplicationBaseSchema):
     employment: List[EmploymentStyleGetSchema]
     conditions: List[ConditionGetSchema]
 
-    class config:
+    class Config:
         orm_mode = True
 
 
