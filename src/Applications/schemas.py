@@ -4,7 +4,7 @@ from typing import Annotated, List, Optional
 from pydantic import BaseModel, conint, model_validator
 
 from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
-                    TermsPaymentEnum, TermsRecruiterEnum, TypesResumeEnum)
+                    TermsPaymentEnum, TermsRecruiterEnum, TypesResumeEnum, ConditionsEnum)
 
 
 class SkillCreateSchema(BaseModel):
@@ -37,6 +37,16 @@ class EmploymentStyleGetSchema(EmploymentStyleCreateSchema):
     id: int
 
 
+class ConditionCreateSchema(BaseModel):
+    """Схема создания условия для соискателя"""
+    name: ConditionsEnum
+
+
+class ConditionGetSchema(ConditionCreateSchema):
+    """Схема полученя условия для соискателя"""
+    id: int
+
+
 class ApplicationBaseSchema(BaseModel):
     """Базовая схема заявки"""
     title: str
@@ -48,7 +58,6 @@ class ApplicationBaseSchema(BaseModel):
     paperwork: PaperWorkEnum
     responsibilities: Optional[str] = None
     requirements: Optional[str] = None
-    conditions: Optional[str] = None
     payment: Annotated[int, conint(ge=1)]
     terms_payment: TermsPaymentEnum
     recruiters_number: Annotated[int, conint(ge=1, le=3)]
@@ -65,9 +74,6 @@ class ApplicationBaseSchema(BaseModel):
             raise ValueError('Максимальная планка зарплаты не может быть больше минимальной')
         return self
 
-    class config:
-        exclude = {'status'}
-
 
 class ApplicationGetSchema(ApplicationBaseSchema):
     """Схема отображения заявки"""
@@ -75,6 +81,7 @@ class ApplicationGetSchema(ApplicationBaseSchema):
     skills: Optional[List[SkillGetSchema]] = None
     work_format: List[WorkFormatGetSchema]
     employment: List[EmploymentStyleGetSchema]
+    conditions: List[ConditionGetSchema]
 
     class config:
         orm_mode = True
@@ -85,13 +92,4 @@ class ApplicationCreateSchema(ApplicationBaseSchema):
     skills: List[SkillCreateSchema] | None
     work_format: List[WorkFormatCreateSchema]
     employment: List[EmploymentStyleCreateSchema]
-
-    # @model_validator(mode='after')
-    # def check_date(self):
-    #     date_now = datetime.now().astimezone(timezone('UTC'))
-    #     if self.resume_showing_date < date_now or self.desired_release_date < date_now:
-    #         raise ValueError('Не может быть указана дата ранее текущего дня')
-    #     return self
-
-    # class Config:
-    #     orm_mode = True
+    conditions: List[ConditionCreateSchema]

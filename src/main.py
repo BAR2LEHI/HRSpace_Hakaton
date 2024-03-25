@@ -4,9 +4,9 @@ from fastapi import FastAPI
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 
-from .Applications.directories import directory_router
+from .redis.router import directory_router
 from .Applications.router import router_app
-from .redis import redis
+from .redis.redis import redis
 from .Users.router import router_user, router_user_register
 
 
@@ -20,7 +20,6 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    root_path="/api",
     lifespan=lifespan,
     title='HRSpace',
     version='0.0.1',

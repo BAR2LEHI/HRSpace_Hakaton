@@ -1,12 +1,12 @@
 import asyncio
 from typing import List
 
-from sqlalchemy import select
+from sqlalchemy import select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .models import Application, EmploymentStyle, Skill, WorkFormat
+from .models import Application, EmploymentStyle, Skill, WorkFormat, Condition
 from .schemas import (ApplicationCreateSchema, EmploymentStyleCreateSchema,
-                      SkillCreateSchema, WorkFormatCreateSchema)
+                      SkillCreateSchema, WorkFormatCreateSchema, ConditionCreateSchema)
 
 
 async def create_skill(db: AsyncSession,
@@ -42,7 +42,7 @@ async def create_employment_style(db: AsyncSession,
 
 
 async def get_skills(db: AsyncSession,
-                     skill_names: List[SkillCreateSchema]):
+                    skill_names: List[SkillCreateSchema]):
     """Получение скиллов по переданному списку их наименований"""
     names = [
         skill['name'] for skill
@@ -83,6 +83,18 @@ async def get_employment_style(db: AsyncSession,
     return res.scalars().all()
 
 
+async def get_condition(db: AsyncSession,
+                        cond_names: List[ConditionCreateSchema]):
+    conditions = [conditions['name'] for conditions in cond_names]
+    stmt = select(
+        Condition
+    ).where(
+        Condition.name.in_(conditions)
+    )
+    res = await db.execute(stmt)
+    return res.scalars().all()
+
+
 async def get_or_create_skill(db: AsyncSession,
                               skill_names: List[str]):
     """Получение и создание скиллов"""
@@ -117,6 +129,16 @@ async def get_app_by_id(db: AsyncSession,
     return app.scalars().unique().first()
 
 
+async def delete_app(db: AsyncSession,
+                     app_id: int):
+    stmt = delete(
+        Application
+    ).where(
+        Application.id == app_id
+    )
+    await db.execute(stmt)
+
+
 async def create_application(db: AsyncSession,
                              app: ApplicationCreateSchema):
     """Создание новой заявки"""
@@ -124,10 +146,12 @@ async def create_application(db: AsyncSession,
     skills = await get_or_create_skill(db, app.pop('skills'))
     work_format = await get_work_format(db, app.pop('work_format'))
     employment = await get_employment_style(db, app.pop('employment'))
+    conditions = await get_condition(db, app.pop('conditions'))
     new_app = Application(**app)
     new_app.work_format.extend(work_format)
     new_app.skills.extend(skills)
     new_app.employment.extend(employment)
+    new_app.conditions.extend(conditions)
     db.add(new_app)
     await db.commit()
     return new_app
