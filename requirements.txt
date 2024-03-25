@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-fastapi==0.110.0
-uvicorn[standart]==0.28.0
-SQLAlchemy==2.0.28
-alembic==1.13.1
-asyncpg==0.29.0
-python-dotenv==1.0.1
-alembic-postgresql-enum==1.1.2
-fastapi-users==13.0.0
-fastapi-users-db-sqlalchemy==6.0.1
-redis==4.6.0
-fastapi-cache2==0.2.1
-=======
 alembic==1.13.1
 alembic-postgresql-enum==1.1.2
 annotated-types==0.6.0
@@ -59,4 +46,3 @@ typing_extensions==4.10.0
 tzdata==2024.1
 uvicorn==0.27.1
 WTForms==3.1.2
->>>>>>> dcbd0231447a19e42e108c0744af24682a7509d7
