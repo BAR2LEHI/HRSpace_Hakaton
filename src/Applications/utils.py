@@ -156,7 +156,7 @@ async def delete_app(db: AsyncSession,
     )
     await db.execute(stmt)
     await db.commit()
-    return 
+    return
 
 
 async def create_application(db: AsyncSession,
