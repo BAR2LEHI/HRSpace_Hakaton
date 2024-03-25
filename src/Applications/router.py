@@ -1,19 +1,19 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, status
+from fastapi.responses import JSONResponse
 from fastapi_cache.decorator import cache
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi.responses import JSONResponse
 
 from ..database import get_async_session
+from .exceptions import NoApplicationExist
 from .schemas import (ApplicationCreateSchema, ApplicationGetSchema,
                       EmploymentStyleCreateSchema, EmploymentStyleGetSchema,
                       SkillCreateSchema, SkillGetSchema,
                       WorkFormatCreateSchema, WorkFormatGetSchema)
 from .utils import (create_application, create_employment_style, create_skill,
-                    create_work_format, get_app_by_id, get_applications_db, delete_app)
-from .exceptions import NoApplicationExist
-
+                    create_work_format, delete_app, get_app_by_id,
+                    get_applications_db)
 
 router_app = APIRouter()
 
@@ -73,11 +73,12 @@ async def delete_application(
     app_id: int,
     db: AsyncSession = Depends(get_async_session)
 ):
-    res = await delete_app(db, app_id)
+    await delete_app(db, app_id)
     return JSONResponse(content={
         'detail': f'Заявка с id={app_id} успешно удалена'
         })
 
+<<<<<<< HEAD
 
 @router_app.put(
     '/{app_id}/',
@@ -103,6 +104,9 @@ async def post_skill(
     return res
 
 
+=======
+  
+>>>>>>> cdb9752fd6b1e226e5daead3c7a00011e892c264
 @router_app.post(
     '/work-format/',
     response_model=WorkFormatGetSchema

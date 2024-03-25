@@ -1,11 +1,12 @@
-from .redis import redis
-import json
 import csv
+import json
+
+from .redis import redis
 
 
 async def load_data_to_redis():
     with open(
-        '../app/data/job_titles.csv',
+        '../HRSpace_Hakaton/data/job_titles.csv',
         'r', newline='',
         encoding='UTF-8'
     ) as csvfile:
@@ -17,7 +18,7 @@ async def load_data_to_redis():
         await redis.set('job_titles',
                         json.dumps(job_titles))
     with open(
-        '../app/data/skills.csv',
+        '../HRSpace_Hakaton/data/skills.csv',
         'r', newline='',
         encoding='UTF-8'
     ) as csvfile:
@@ -29,7 +30,7 @@ async def load_data_to_redis():
         await redis.set('skills',
                         json.dumps(skills))
     with open(
-        '../app/data/specialization.csv',
+        '../HRSpace_Hakaton/data/specialization.csv',
         'r', newline='',
         encoding='UTF-8'
     ) as csvfile:

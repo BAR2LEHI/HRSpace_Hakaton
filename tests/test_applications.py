@@ -1,2 +1,5 @@
-def test_first():
+
+
+def test():
     assert 1 == 1
+    

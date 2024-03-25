@@ -1,13 +1,15 @@
 import asyncio
 from typing import List
 
-from sqlalchemy import select, delete, exists
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .models import Application, EmploymentStyle, Skill, WorkFormat, Condition
-from .schemas import (ApplicationCreateSchema, EmploymentStyleCreateSchema,
-                      SkillCreateSchema, WorkFormatCreateSchema, ConditionCreateSchema)
 from .exceptions import NoApplicationExist
+from .models import Application, Condition, EmploymentStyle, Skill, WorkFormat
+from .schemas import (ApplicationCreateSchema, ConditionCreateSchema,
+                      EmploymentStyleCreateSchema, SkillCreateSchema,
+                      WorkFormatCreateSchema)
+
 
 async def create_skill(db: AsyncSession,
                        skill_name: str):
@@ -71,7 +73,9 @@ async def get_work_format(db: AsyncSession,
 
 
 async def get_employment_style(db: AsyncSession,
-                               empl_style_names: List[EmploymentStyleCreateSchema]):
+                               empl_style_names: List[
+                                   EmploymentStyleCreateSchema
+                                ]):
     """Получение видов занятости соискателя"""
     empl_stl_names = [emp['name'] for emp in empl_style_names]
     stmt = select(
@@ -113,7 +117,7 @@ async def get_or_create_skill(db: AsyncSession,
 
 
 async def get_applications_db(db: AsyncSession):
-    stmt = select(Application).options()
+    stmt = select(Application)
     apps = await db.execute(stmt)
     return apps.scalars().unique().all()
 
@@ -129,32 +133,16 @@ async def get_app_by_id(db: AsyncSession,
     return app.scalars().unique().first()
 
 
-async def check_application_existing(db: AsyncSession,
-                                     app_id: int):
-    stmt = select(
-        Application
-    ).where(
-        Application.id == app_id
-    )
-    app = await db.execute(stmt)
-    return app
-
-
 async def delete_app(db: AsyncSession,
                      app_id: int):
-    app = await check_application_existing(
+    app = await get_app_by_id(
         db, app_id
     )
     if app is None:
         raise NoApplicationExist(
             name=f'Заявки с id={app_id} не существует'
         )
-    stmt = delete(
-        Application
-    ).where(
-        Application.id == app_id
-    )
-    await db.execute(stmt)
+    await db.delete(app)
     await db.commit()
     return
 
