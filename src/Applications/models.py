@@ -281,4 +281,4 @@ class EmploymentStyle(Base):
     )
 
     def __str__(self):
-        return self.name
+        return self.name.name
