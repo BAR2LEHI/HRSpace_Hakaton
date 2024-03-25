@@ -84,7 +84,7 @@ class ApplicationGetSchema(ApplicationBaseSchema):
     conditions: List[ConditionGetSchema]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ApplicationCreateSchema(ApplicationBaseSchema):
