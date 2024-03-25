@@ -4,7 +4,7 @@ from typing import Annotated, List, Optional
 from pydantic import BaseModel, conint, model_validator
 
 from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
-                    TermsPaymentEnum, TermsRecruiterEnum, TypesResumeEnum, ConditionsEnum)
+                    TermsPaymentEnum, TypesResumeEnum, ConditionsEnum)
 
 
 class SkillCreateSchema(BaseModel):
@@ -56,16 +56,15 @@ class ApplicationBaseSchema(BaseModel):
     salary_from: Optional[int] = None
     salary_up_to: Optional[int] = None
     paperwork: PaperWorkEnum
-    responsibilities: Optional[str] = None
-    requirements: Optional[str] = None
+    responsibilities_requirements: Optional[str] = None
     payment: Annotated[int, conint(ge=1)]
+    workers_number: int
     terms_payment: TermsPaymentEnum
     recruiters_number: Annotated[int, conint(ge=1, le=3)]
     resume_showing_date: datetime
     desired_release_date: datetime
     recruiter_responsibilities: Optional[str] = None
     resume_type: TypesResumeEnum
-    terms_recruiter: TermsRecruiterEnum
     stop_list_employee: Optional[str] = None
 
     @model_validator(mode='after')
