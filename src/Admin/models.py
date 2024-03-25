@@ -70,8 +70,3 @@ class ApplicationAdmin(ModelView, model=Application):
         Application.id, Application.title, Application.status,
         Application.desired_release_date
     ]
-    '''form_ajax_refs = {
-        'skills': {
-            'fields': ('name',),
-        }
-    }'''

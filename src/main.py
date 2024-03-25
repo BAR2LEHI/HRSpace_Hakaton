@@ -3,7 +3,6 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
-from fastapi.middleware.cors import CORSMiddleware
 
 from sqladmin import Admin
 
