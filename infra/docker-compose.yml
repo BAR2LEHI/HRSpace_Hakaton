@@ -19,9 +19,7 @@
         - db
 
     frontend:
-      build:
-        context: ../frontend
-        dockerfile: Dockerfile
+      image: lordrie/front
       container_name: frontend_app
 
     nginx:

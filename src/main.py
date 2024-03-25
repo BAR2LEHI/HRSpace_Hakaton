@@ -20,6 +20,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
+    root_path="/api",
     lifespan=lifespan,
     title='HRSpace',
     version='0.0.1',
