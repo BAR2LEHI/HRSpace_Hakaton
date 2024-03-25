@@ -53,12 +53,6 @@ class TypesResumeEnum(str, Enum):
     with_interview = 'with_interview'
 
 
-class TermsRecruiterEnum(str, Enum):
-    """Условия сотрудничества с рекрутером"""
-    gph = 'gph'
-    agreement_with_legal_entity = 'agreement_with_legal_entity'
-
-
 class ConditionsEnum(str, Enum):
     """Условия для соискателя от компании"""
     fitness = 'fitness'
