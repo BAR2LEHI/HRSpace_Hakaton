@@ -11,6 +11,7 @@ from .redis.router import directory_router
 from .Applications.router import router_app
 from .redis.redis import redis
 from .Users.router import router_user, router_user_register
+from fastapi.middleware.cors import CORSMiddleware
 from .Admin.auth import authentication_backend
 
 from .database import engine
@@ -20,7 +21,6 @@ from .Admin.models import (
     AppSkillAdmin, AppFormatAdmin, AppConditionAdmin,
     AppEmploymentAdmin, ApplicationAdmin
 )
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

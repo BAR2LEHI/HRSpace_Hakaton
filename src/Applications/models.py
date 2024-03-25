@@ -4,8 +4,8 @@ from sqlalchemy.dialects.postgresql import ENUM as pgEnum
 from sqlalchemy.orm import relationship
 
 from ..database import Base
-from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum,
-                    PaperWorkEnum, StatusEnum, TermsPaymentEnum,
+from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
+                    StatusEnum, TermsPaymentEnum,
                     TypesResumeEnum, ConditionsEnum)
 
 
@@ -132,7 +132,7 @@ class Application(Base):
     )
     paperwork = Column(
         pgEnum(PaperWorkEnum),
-        nullable=False
+        nullable=True
     )
     responsibilities_requirements = Column(
         String,
@@ -157,15 +157,15 @@ class Application(Base):
     )
     recruiters_number = Column(
         Integer,
-        nullable=False
+        nullable=True
     )
     resume_showing_date = Column(
         DateTime,
-        nullable=False
+        nullable=True,
     )
     desired_release_date = Column(
         DateTime,
-        nullable=False
+        nullable=True
     )
     recruiter_responsibilities = Column(
         String,
@@ -173,6 +173,10 @@ class Application(Base):
     )
     resume_type = Column(
         pgEnum(TypesResumeEnum),
+        nullable=True
+    )
+    recruiter_responsibilities = Column(
+        String,
         nullable=True
     )
     comments = Column(
@@ -212,8 +216,8 @@ class Condition(Base):
     )
     name = Column(
         pgEnum(ConditionsEnum),
-        nullable=False,
-        unique=True
+        unique=True, 
+        nullable=False
     )
 
     def __str__(self):
