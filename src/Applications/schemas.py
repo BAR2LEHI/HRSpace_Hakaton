@@ -84,8 +84,8 @@ class ApplicationGetSchema(ApplicationBaseSchema):
     employment: List[EmploymentStyleGetSchema]
     conditions: List[ConditionGetSchema]
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True
 
 
 class ApplicationCreateSchema(ApplicationBaseSchema):

@@ -13,7 +13,7 @@ class UserRead(schemas.BaseUser[int]):
     is_verified: Optional[bool] = False
     role: Optional[str] = 'customer'
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 
@@ -27,5 +27,5 @@ class UserCreate(schemas.BaseUserCreate):
     is_verified: Optional[bool] = False
     role: Optional[str] = 'customer'
 
-    class Config:
+    class ConfigDict:
         exclude = {"role"}
