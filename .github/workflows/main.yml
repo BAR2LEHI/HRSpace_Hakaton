@@ -92,3 +92,6 @@ jobs:
           sudo docker compose -f docker-compose.prod.yml pull
           sudo docker compose -f docker-compose.prod.yml down
           sudo docker compose -f docker-compose.prod.yml up -d
+          docker exec -it db_postgre psql -U postgres -d postgres -c "DROP TABLE alembic_version;"
+          sudo docker exec -it backend_app alembic revision --autogenerate -m "MIGRATE"
+          sudo docker exec -it backend_app alembic upgrade head
