@@ -1,15 +1,26 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 
+from sqladmin import Admin
+from fastapi.responses import JSONResponse
 from .redis.router import directory_router
 from .Applications.router import router_app
 from .redis.redis import redis
 from .Users.router import router_user, router_user_register
 from fastapi.middleware.cors import CORSMiddleware
+from .Admin.auth import authentication_backend
 
+from .Applications.exceptions import NoApplicationExist, NoApplicationsExist
+from .database import engine
+from .Admin.models import (
+    UserAdmin, SkillAdmin, ConditionAdmin,
+    WorkFormatAdmin, EmploymentStyleAdmin,
+    AppSkillAdmin, AppFormatAdmin, AppConditionAdmin,
+    AppEmploymentAdmin, ApplicationAdmin
+)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,8 +39,8 @@ origins = [
     'http://frontend_app',
 ]
 
+
 app = FastAPI(
-    root_path="/api",
     lifespan=lifespan,
     title='HRSpace',
     version='0.0.1',
@@ -38,6 +49,9 @@ app = FastAPI(
         'url': 'https://hrspace.hh.ru/',
     }
 )
+
+
+admin = Admin(app, engine=engine, authentication_backend=authentication_backend)
 
 
 app.add_middleware(
@@ -69,3 +83,35 @@ app.include_router(
     prefix='/directories',
     tags=['directories']
 )
+
+
+@app.exception_handler(NoApplicationExist)
+async def no_application_handler(request: Request, exc: NoApplicationExist):
+    return JSONResponse(
+        status_code=404,
+        content={
+            'detail':f'Заявки с id={exc.id} не существует.'
+        }
+    )
+
+
+@app.exception_handler(NoApplicationsExist)
+async def no_applications_handler(request: Request, exc: NoApplicationsExist):
+    return JSONResponse(
+        status_code=404,
+        content={
+            'detail':'В базе данных ещё нет заявок.'
+        }
+    )
+
+
+admin.add_view(UserAdmin)
+admin.add_view(SkillAdmin)
+admin.add_view(AppSkillAdmin)
+admin.add_view(ConditionAdmin)
+admin.add_view(WorkFormatAdmin)
+admin.add_view(EmploymentStyleAdmin)
+admin.add_view(AppFormatAdmin)
+admin.add_view(AppConditionAdmin)
+admin.add_view(AppEmploymentAdmin)
+admin.add_view(ApplicationAdmin)
