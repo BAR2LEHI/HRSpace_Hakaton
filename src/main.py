@@ -1,26 +1,24 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
-
 from sqladmin import Admin
-from fastapi.responses import JSONResponse
-from .redis.router import directory_router
-from .Applications.router import router_app
-from .redis.redis import redis
-from .Users.router import router_user, router_user_register
-from fastapi.middleware.cors import CORSMiddleware
-from .Admin.auth import authentication_backend
 
-from .Applications.exceptions import NoApplicationExist
+from .Admin.auth import authentication_backend
+from .Admin.models import (AppConditionAdmin, AppEmploymentAdmin,
+                           AppFormatAdmin, ApplicationAdmin, AppSkillAdmin,
+                           ConditionAdmin, EmploymentStyleAdmin, SkillAdmin,
+                           UserAdmin, WorkFormatAdmin)
+from .Applications.exceptions import NoApplicationExist, NoConnectionWithRedis
+from .Applications.router import router_app
 from .database import engine
-from .Admin.models import (
-    UserAdmin, SkillAdmin, ConditionAdmin,
-    WorkFormatAdmin, EmploymentStyleAdmin,
-    AppSkillAdmin, AppFormatAdmin, AppConditionAdmin,
-    AppEmploymentAdmin, ApplicationAdmin
-)
+from .redis.redis import redis
+from .redis.router import directory_router
+from .Users.router import router_user, router_user_register
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -92,6 +90,19 @@ async def app_does_not_exist_handler(
 ):
     return JSONResponse(
         status_code=404,
+        content={
+            'detail': exc.name
+        }
+    )
+
+
+@app.exception_handler(NoConnectionWithRedis)
+async def no_connect_with_redis_handler(
+    request: Request,
+    exc: NoConnectionWithRedis
+):
+    return JSONResponse(
+        status_code=503,
         content={
             'detail': exc.name
         }

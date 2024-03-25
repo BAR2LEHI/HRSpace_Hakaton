@@ -3,8 +3,9 @@ from typing import Annotated, List, Optional
 
 from pydantic import BaseModel, conint, model_validator
 
-from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
-                    TermsPaymentEnum, TypesResumeEnum, ConditionsEnum, StatusEnum)
+from .enums import (ConditionsEnum, EmploymentEnum, ExperienceEnum, FormatEnum,
+                    PaperWorkEnum, StatusEnum, TermsPaymentEnum,
+                    TypesResumeEnum)
 
 
 class SkillCreateSchema(BaseModel):
