@@ -8,6 +8,7 @@ from .redis.router import directory_router
 from .Applications.router import router_app
 from .redis.redis import redis
 from .Users.router import router_user, router_user_register
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @asynccontextmanager
@@ -17,6 +18,14 @@ async def lifespan(app: FastAPI):
         prefix='fastapi-cache'
     )
     yield
+    FastAPICache.clear()
+
+
+origins = [
+    'http://frontend_app',
+    'http://localhost:3002'
+    'http://hrspace.sytes.net:3002'
+]
 
 
 app = FastAPI(
@@ -28,6 +37,16 @@ app = FastAPI(
         'url': 'https://hrspace.hh.ru/',
     }
 )
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 app.include_router(
     router_app,

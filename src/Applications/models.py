@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 from ..database import Base
 from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
-                    StatusEnum, TermsPaymentEnum, TermsRecruiterEnum,
+                    StatusEnum, TermsPaymentEnum,
                     TypesResumeEnum, ConditionsEnum)
 
 
@@ -98,7 +98,7 @@ class Application(Base):
     skills = relationship(
         'Skill',
         secondary='skill_to_application',
-        lazy='subquery'
+        lazy='subquery',
     )
     company_specialization = Column(
         String,
@@ -115,7 +115,7 @@ class Application(Base):
     )
     experience = Column(
         pgEnum(ExperienceEnum),
-        nullable=False
+        nullable=True
     )
     employment = relationship(
         'EmploymentStyle',
@@ -132,7 +132,7 @@ class Application(Base):
     )
     paperwork = Column(
         pgEnum(PaperWorkEnum),
-        nullable=False
+        nullable=True
     )
     responsibilities = Column(
         String,
@@ -161,11 +161,11 @@ class Application(Base):
     )
     resume_showing_date = Column(
         DateTime,
-        nullable=False
+        nullable=True,
     )
     desired_release_date = Column(
         DateTime,
-        nullable=False
+        nullable=True
     )
     recruiter_responsibilities = Column(
         String,
@@ -178,10 +178,6 @@ class Application(Base):
     recruiter_responsibilities = Column(
         String,
         nullable=True
-    )
-    terms_recruiter = Column(
-        pgEnum(TermsRecruiterEnum),
-        nullable=False
     )
     comments = Column(
         String,
