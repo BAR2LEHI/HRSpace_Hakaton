@@ -79,7 +79,7 @@ jobs:
         host: 77.222.53.69
         username: root
         password: U@tUwRLTNVJHR1M2
-        source: "infra/docker-compose.prod.yml"
+        source: "docker-compose.prod.yml"
         target: "hr_space"
     - name: Executing remote ssh commands to deploy
       uses: appleboy/ssh-action@master
