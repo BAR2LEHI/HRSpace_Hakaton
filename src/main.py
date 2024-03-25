@@ -23,8 +23,10 @@ async def lifespan(app: FastAPI):
 
 origins = [
     'http://frontend_app',
+    'http://localhost:3002',
+    'http://hrspace.sytes.net:3002',
+    'https://localhost:3002',
     'http://localhost:3002'
-    'http://hrspace.sytes.net:3002'
 ]
 
 
