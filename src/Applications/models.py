@@ -4,8 +4,8 @@ from sqlalchemy.dialects.postgresql import ENUM as pgEnum
 from sqlalchemy.orm import relationship
 
 from ..database import Base
-from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
-                    StatusEnum, TermsPaymentEnum, TermsRecruiterEnum,
+from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum,
+                    PaperWorkEnum, StatusEnum, TermsPaymentEnum,
                     TypesResumeEnum, ConditionsEnum)
 
 
@@ -134,11 +134,7 @@ class Application(Base):
         pgEnum(PaperWorkEnum),
         nullable=False
     )
-    responsibilities = Column(
-        String,
-        nullable=True
-    )
-    requirements = Column(
+    responsibilities_requirements = Column(
         String,
         nullable=True
     )
@@ -148,6 +144,10 @@ class Application(Base):
         lazy='subquery'
     )
     payment = Column(
+        Integer,
+        nullable=False
+    )
+    workers_number = Column(
         Integer,
         nullable=False
     )
@@ -174,14 +174,6 @@ class Application(Base):
     resume_type = Column(
         pgEnum(TypesResumeEnum),
         nullable=True
-    )
-    recruiter_responsibilities = Column(
-        String,
-        nullable=True
-    )
-    terms_recruiter = Column(
-        pgEnum(TermsRecruiterEnum),
-        nullable=False
     )
     comments = Column(
         String,
@@ -220,9 +212,12 @@ class Condition(Base):
     )
     name = Column(
         pgEnum(ConditionsEnum),
-        unique=True, 
-        nullable=False
+        nullable=False,
+        unique=True
     )
+
+    def __str__(self):
+        return self.name.name
 
 
 class Skill(Base):
@@ -241,6 +236,9 @@ class Skill(Base):
         nullable=False
     )
 
+    def __str__(self):
+        return self.name
+
 
 class WorkFormat(Base):
     """Модель формата работы"""
@@ -257,6 +255,9 @@ class WorkFormat(Base):
         nullable=False, 
         unique=True
     )
+
+    def __str__(self):
+        return self.title.name
 
 
 class EmploymentStyle(Base):
@@ -275,3 +276,5 @@ class EmploymentStyle(Base):
         unique=True
     )
 
+    def __str__(self):
+        return self.name
