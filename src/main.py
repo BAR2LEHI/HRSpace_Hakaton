@@ -1,11 +1,11 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 
 from sqladmin import Admin
-
+from fastapi.responses import JSONResponse
 from .redis.router import directory_router
 from .Applications.router import router_app
 from .redis.redis import redis
@@ -13,6 +13,7 @@ from .Users.router import router_user, router_user_register
 from fastapi.middleware.cors import CORSMiddleware
 from .Admin.auth import authentication_backend
 
+from .Applications.exceptions import NoApplicationExist, NoApplicationsExist
 from .database import engine
 from .Admin.models import (
     UserAdmin, SkillAdmin, ConditionAdmin,
@@ -29,6 +30,7 @@ async def lifespan(app: FastAPI):
     )
     yield
 
+
 origins = [
     'http://frontend_app',
     'http://localhost:3002',
@@ -36,6 +38,7 @@ origins = [
     'https://localhost:3002',
     'http://localhost:3002'
 ]
+
 
 app = FastAPI(
     lifespan=lifespan,
@@ -47,6 +50,10 @@ app = FastAPI(
     }
 )
 
+
+admin = Admin(app, engine=engine, authentication_backend=authentication_backend)
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -55,7 +62,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-admin = Admin(app, engine=engine, authentication_backend=authentication_backend)
 
 app.include_router(
     router_app,
@@ -77,6 +83,27 @@ app.include_router(
     prefix='/directories',
     tags=['directories']
 )
+
+
+@app.exception_handler(NoApplicationExist)
+async def no_application_handler(request: Request, exc: NoApplicationExist):
+    return JSONResponse(
+        status_code=404,
+        content={
+            'detail':f'Заявки с id={exc.id} не существует.' 
+        }
+    )
+
+
+@app.exception_handler(NoApplicationsExist)
+async def no_applications_handler(request: Request, exc: NoApplicationsExist):
+    return JSONResponse(
+        status_code=404,
+        content={
+            'detail':'В базе данных ещё нет заявок.' 
+        }
+    )
+
 
 admin.add_view(UserAdmin)
 admin.add_view(SkillAdmin)

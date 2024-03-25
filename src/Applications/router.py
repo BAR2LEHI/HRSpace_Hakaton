@@ -11,6 +11,8 @@ from .schemas import (ApplicationCreateSchema, ApplicationGetSchema,
                       WorkFormatCreateSchema, WorkFormatGetSchema)
 from .utils import (create_application, create_employment_style, create_skill,
                     create_work_format, get_app_by_id, get_applications_db)
+from .exceptions import NoApplicationExist, NoApplicationsExist
+
 
 router_app = APIRouter()
 
@@ -25,6 +27,8 @@ async def get_applications(
     db: AsyncSession = Depends(get_async_session),
 ):
     all_apps = await get_applications_db(db)
+    if not all_apps:
+        raise NoApplicationsExist()
     return all_apps
 
 
@@ -39,6 +43,8 @@ async def get_one_application(
     db: AsyncSession = Depends(get_async_session)
 ):
     app = await get_app_by_id(db, app_id)
+    if not app:
+        raise NoApplicationExist(app_id)
     return app
 
 
@@ -54,6 +60,15 @@ async def post_application(
     new_app = await create_application(db, app)
     return new_app
 
+
+@router_app.delete(
+    '/{app_id}/'
+)
+async def delete_application(
+    app_id: int,
+    db: AsyncSession = Depends(get_async_session)
+):
+    pass
 
 @router_app.put(
     '/{app_id}/', 

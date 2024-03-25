@@ -4,7 +4,7 @@ from typing import Annotated, List, Optional
 from pydantic import BaseModel, conint, model_validator
 
 from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
-                    TermsPaymentEnum, TypesResumeEnum, ConditionsEnum)
+                    TermsPaymentEnum, TypesResumeEnum, ConditionsEnum, StatusEnum)
 
 
 class SkillCreateSchema(BaseModel):
@@ -50,6 +50,7 @@ class ConditionGetSchema(ConditionCreateSchema):
 class ApplicationBaseSchema(BaseModel):
     """Базовая схема заявки"""
     title: str
+    status: StatusEnum
     company_specialization: str
     address: Optional[str] = None
     experience: ExperienceEnum
