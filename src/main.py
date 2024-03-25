@@ -18,7 +18,6 @@ async def lifespan(app: FastAPI):
         prefix='fastapi-cache'
     )
     yield
-    FastAPICache.clear()
 
 
 origins = [

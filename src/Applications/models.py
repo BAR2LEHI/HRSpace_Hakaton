@@ -98,7 +98,7 @@ class Application(Base):
     skills = relationship(
         'Skill',
         secondary='skill_to_application',
-        lazy='subquery',
+        lazy='subquery'
     )
     company_specialization = Column(
         String,
@@ -134,11 +134,7 @@ class Application(Base):
         pgEnum(PaperWorkEnum),
         nullable=True
     )
-    responsibilities = Column(
-        String,
-        nullable=True
-    )
-    requirements = Column(
+    responsibilities_requirements = Column(
         String,
         nullable=True
     )
@@ -151,13 +147,17 @@ class Application(Base):
         Integer,
         nullable=False
     )
+    workers_number = Column(
+        Integer,
+        nullable=False
+    )
     terms_payment = Column(
         pgEnum(TermsPaymentEnum),
         nullable=False
     )
     recruiters_number = Column(
         Integer,
-        nullable=False
+        nullable=True
     )
     resume_showing_date = Column(
         DateTime,
