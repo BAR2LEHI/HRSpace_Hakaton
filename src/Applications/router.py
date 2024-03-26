@@ -1,17 +1,22 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, status
+from fastapi.responses import JSONResponse
 from fastapi_cache.decorator import cache
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import get_async_session
-from .exceptions import NoApplicationExist, NoApplicationsExist
+
+from .exceptions import NoApplicationExist
+
 from .schemas import (ApplicationCreateSchema, ApplicationGetSchema,
                       EmploymentStyleCreateSchema, EmploymentStyleGetSchema,
-                      SkillCreateSchema, SkillGetSchema,
                       WorkFormatCreateSchema, WorkFormatGetSchema)
-from .utils import (create_application, create_employment_style, create_skill,
-                    create_work_format, get_app_by_id, get_applications_db)
+
+from .utils import (create_application, create_employment_style,
+                    create_work_format, delete_app, get_app_by_id,
+                    get_applications_db)
+
 
 router_app = APIRouter()
 
@@ -28,7 +33,9 @@ async def get_applications(
     """Роутер получения заявок"""
     all_apps = await get_applications_db(db)
     if not all_apps:
-        raise NoApplicationsExist()
+        raise NoApplicationExist(
+            name='Нет существующих заявок.'
+        )
     return all_apps
 
 
@@ -45,7 +52,9 @@ async def get_one_application(
     """Роутер получения заявки по id"""
     app = await get_app_by_id(db, app_id)
     if not app:
-        raise NoApplicationExist(app_id)
+        raise NoApplicationExist(
+            name=f'Заявка с id={app_id} не существует.'
+        )
     return app
 
 
@@ -64,40 +73,18 @@ async def post_application(
 
 
 @router_app.delete(
-    '/{app_id}/'
+    '/{app_id}/',
+    status_code=status.HTTP_204_NO_CONTENT
 )
 async def delete_application(
         app_id: int,
         db: AsyncSession = Depends(get_async_session)
 ):
     """Роутер удаления заявки"""
-    pass
-
-
-@router_app.put(
-    '/{app_id}/',
-    response_model=ApplicationGetSchema,
-    status_code=status.HTTP_201_CREATED
-)
-async def edit_application(
-        app_id: int,
-        db: AsyncSession = Depends(get_async_session)
-):
-    """Роутер изменения заявки"""
-    pass
-
-
-@router_app.post(
-    '/skills/',
-    response_model=SkillGetSchema
-)
-async def post_skill(
-        skill: SkillCreateSchema,
-        db: AsyncSession = Depends(get_async_session)
-):
-    """Роутер добавления скилла"""
-    res = await create_skill(db, skill)
-    return res
+    await delete_app(db, app_id)
+    return JSONResponse(content={
+        'detail': f'Заявка с id={app_id} успешно удалена'
+        })
 
 
 @router_app.post(

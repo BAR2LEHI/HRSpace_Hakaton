@@ -1,9 +1,11 @@
 import json
-from typing import List
+from typing import Dict, List
 
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 from fastapi_cache.decorator import cache
 
+from ..Applications.exceptions import NoConnectionWithRedis
 from .redis import redis
 from .utils import load_data_to_redis
 
@@ -17,7 +19,12 @@ directory_router = APIRouter()
 @cache(expire=360)
 async def get_directory_skills():
     """Роутер получения скиллов"""
-    skills_names = await redis.get('skills')
+    try:
+        skills_names = await redis.get('skills')
+    except:
+        raise NoConnectionWithRedis(
+            name='Нет соединения с Redis'
+        )
     return json.loads(skills_names)
 
 
@@ -28,7 +35,12 @@ async def get_directory_skills():
 @cache(expire=360)
 async def get_directory_job_title():
     """Роутер получения названий работы"""
-    job_titles = await redis.get('job_titles')
+    try:
+        job_titles = await redis.get('job_titles')
+    except:
+        raise NoConnectionWithRedis(
+            name='Нет соединения с Redis'
+        )
     return json.loads(job_titles)
 
 
@@ -39,7 +51,12 @@ async def get_directory_job_title():
 @cache(expire=360)
 async def get_directory_specialization():
     """Роутер получения специализации"""
-    specs = await redis.get('specialization')
+    try:
+        specs = await redis.get('specialization')
+    except:
+        raise NoConnectionWithRedis(
+            name='Нет соединения с Redis'
+        )
     return json.loads(specs)
 
 

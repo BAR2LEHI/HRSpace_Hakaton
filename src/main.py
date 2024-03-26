@@ -12,7 +12,9 @@ from .Admin.models import (AppConditionAdmin, AppEmploymentAdmin,
                            AppFormatAdmin, ApplicationAdmin, AppSkillAdmin,
                            ConditionAdmin, EmploymentStyleAdmin, SkillAdmin,
                            UserAdmin, WorkFormatAdmin)
-from .Applications.exceptions import NoApplicationExist, NoApplicationsExist
+
+from .Applications.exceptions import NoApplicationExist, NoConnectionWithRedis
+
 from .Applications.router import router_app
 from .database import engine
 from .redis.redis import redis
@@ -86,21 +88,27 @@ app.include_router(
 
 
 @app.exception_handler(NoApplicationExist)
-async def no_application_handler(request: Request, exc: NoApplicationExist):
+async def app_does_not_exist_handler(
+    request: Request,
+    exc: NoApplicationExist
+):
     return JSONResponse(
         status_code=404,
         content={
-            'detail': f'Заявки с id={exc.id} не существует.'
+            'detail': exc.name
         }
     )
 
 
-@app.exception_handler(NoApplicationsExist)
-async def no_applications_handler(request: Request, exc: NoApplicationsExist):
+@app.exception_handler(NoConnectionWithRedis)
+async def no_connect_with_redis_handler(
+    request: Request,
+    exc: NoConnectionWithRedis
+):
     return JSONResponse(
-        status_code=404,
+        status_code=503,
         content={
-            'detail': 'В базе данных ещё нет заявок.'
+            'detail': exc.name
         }
     )
 

@@ -67,8 +67,8 @@ class AppCondition(Base):
 
     condition_id = Column(
         Integer,
-        ForeignKey('condition.id'),
-        primary_key=True
+        ForeignKey('condition.id', ondelete='CASCADE'),
+        primary_key=True,
     )
     application_id = Column(
         Integer,
@@ -141,7 +141,7 @@ class Application(Base):
     conditions = relationship(
         'Condition',
         secondary='condition_to_application',
-        lazy='subquery'
+        lazy='subquery',
     )
     payment = Column(
         Integer,

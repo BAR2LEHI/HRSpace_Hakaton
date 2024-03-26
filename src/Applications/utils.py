@@ -1,8 +1,10 @@
 import asyncio
 from typing import List
 
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from .exceptions import NoApplicationExist
 
 from .models import Application, Condition, EmploymentStyle, Skill, WorkFormat
 from .schemas import (ApplicationCreateSchema, ConditionCreateSchema,
@@ -117,7 +119,7 @@ async def get_or_create_skill(db: AsyncSession,
 
 
 async def get_applications_db(db: AsyncSession):
-    stmt = select(Application).options()
+    stmt = select(Application)
     apps = await db.execute(stmt)
     return apps.scalars().unique().all()
 
@@ -135,12 +137,16 @@ async def get_app_by_id(db: AsyncSession,
 
 async def delete_app(db: AsyncSession,
                      app_id: int):
-    stmt = delete(
-        Application
-    ).where(
-        Application.id == app_id
+    app = await get_app_by_id(
+        db, app_id
     )
-    await db.execute(stmt)
+    if app is None:
+        raise NoApplicationExist(
+            name=f'Заявки с id={app_id} не существует'
+        )
+    await db.delete(app)
+    await db.commit()
+    return
 
 
 async def create_application(db: AsyncSession,

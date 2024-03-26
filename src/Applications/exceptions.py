@@ -1,7 +1,8 @@
 class NoApplicationExist(Exception):
-    def __init__(self, id: int):
-        self.id = id
+    def __init__(self, name: str):
+        self.name = name
 
 
-class NoApplicationsExist(Exception):
-    pass
+class NoConnectionWithRedis(Exception):
+    def __init__(self, name: str):
+        self.name = name
