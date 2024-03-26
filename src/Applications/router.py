@@ -79,8 +79,7 @@ async def delete_application(
     """Роутер удаления заявки"""
     await delete_app(db, app_id)
     return JSONResponse(content={
-        'detail': f'Заявка с id={app_id} успешно удалена'
-        })
+        'detail': f'Заявка с id={app_id} успешно удалена'})
 
 
 @router_app.post(
