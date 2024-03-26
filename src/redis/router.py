@@ -14,7 +14,7 @@ directory_router = APIRouter()
 
 @directory_router.get(
     '/skills/', 
-    response_model=Dict
+    response_model=List[str]
 )
 @cache(expire=360)
 async def get_directory_skills():
@@ -44,7 +44,7 @@ async def get_directory_job_title():
 
 @directory_router.get(
     '/specializations/', 
-    response_model=Dict
+    response_model=List[str]
 )
 @cache(expire=360)
 async def get_directory_specialization():

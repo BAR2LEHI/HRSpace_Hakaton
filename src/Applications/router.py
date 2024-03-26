@@ -9,9 +9,8 @@ from ..database import get_async_session
 from .exceptions import NoApplicationExist
 from .schemas import (ApplicationCreateSchema, ApplicationGetSchema,
                       EmploymentStyleCreateSchema, EmploymentStyleGetSchema,
-                      SkillCreateSchema, SkillGetSchema,
                       WorkFormatCreateSchema, WorkFormatGetSchema)
-from .utils import (create_application, create_employment_style, create_skill,
+from .utils import (create_application, create_employment_style,
                     create_work_format, delete_app, get_app_by_id,
                     get_applications_db)
 
@@ -67,7 +66,8 @@ async def post_application(
 
 
 @router_app.delete(
-    '/{app_id}/'
+    '/{app_id}/',
+    status_code=status.HTTP_204_NO_CONTENT
 )
 async def delete_application(
     app_id: int,
