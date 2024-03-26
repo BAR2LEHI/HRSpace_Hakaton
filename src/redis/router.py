@@ -61,10 +61,5 @@ async def get_directory_specialization():
     '/load_data/'
 )
 async def load_data():
-    try:
-        await load_data_to_redis()
-    except:
-        raise NoConnectionWithRedis(
-            name='Нет соединения с Redis'
-        )
+    await load_data_to_redis()
     return {'detail': 'Данные успешно загружены'}
