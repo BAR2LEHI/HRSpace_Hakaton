@@ -1,12 +1,10 @@
 import asyncio
-
 from functools import wraps
 from typing import AsyncGenerator
 from unittest import mock
 
 import pytest
 from fastapi_cache import FastAPICache
-
 from httpx import AsyncClient
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
@@ -30,7 +28,6 @@ mock.patch('fastapi_cache.decorator.cache', mock_cache).start()
 
 from src.database import Base, get_async_session
 from src.main import app
-
 
 TEST_DATABASE_URL = (
     f'postgresql+asyncpg:/'

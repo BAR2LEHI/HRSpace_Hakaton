@@ -6,17 +6,13 @@ from fastapi_cache.decorator import cache
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import get_async_session
-
 from .exceptions import NoApplicationExist
-
 from .schemas import (ApplicationCreateSchema, ApplicationGetSchema,
                       EmploymentStyleCreateSchema, EmploymentStyleGetSchema,
                       WorkFormatCreateSchema, WorkFormatGetSchema)
-
 from .utils import (create_application, create_employment_style,
                     create_work_format, delete_app, get_app_by_id,
                     get_applications_db)
-
 
 router_app = APIRouter()
 
