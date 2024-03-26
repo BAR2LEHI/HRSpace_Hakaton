@@ -29,7 +29,7 @@ async def get_directory_skills():
 
 @directory_router.get(
     '/job-titles/', 
-    response_model=Dict
+    response_model=List[str]
 )
 @cache(expire=360)
 async def get_directory_job_title():

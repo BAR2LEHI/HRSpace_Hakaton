@@ -5,7 +5,7 @@ from typing import AsyncGenerator
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy import NullPool
 
 from src.config import (
     DB_HOST_TEST, DB_NAME_TEST, DB_PORT_TEST,
@@ -20,17 +20,17 @@ TEST_DATABASE_URL = (
 )
 
 # Создаём асинхронный движок на основе которого будут создаваться сессии для работы с БД
-engine_test = create_async_engine(TEST_DATABASE_URL)
+engine_test = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool)
 
 # Класс sessionmaker'а, который будет отдавать нам асинхронную сессию для подключения к БД
-async_session = sessionmaker(engine_test, class_=AsyncSession,
+async_session_maker = sessionmaker(engine_test, class_=AsyncSession,
                                    expire_on_commit=False)
 metadata = Base.metadata
 metadata.bind = engine_test
 
 
 async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session() as session:
+    async with async_session_maker() as session:
         yield session
 
 app.dependency_overrides[get_async_session] = override_get_async_session
