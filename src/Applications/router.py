@@ -78,35 +78,7 @@ async def delete_application(
         'detail': f'Заявка с id={app_id} успешно удалена'
         })
 
-<<<<<<< HEAD
 
-@router_app.put(
-    '/{app_id}/',
-    response_model=ApplicationGetSchema,
-    status_code=status.HTTP_201_CREATED
-)
-async def edit_application(
-    app_id: int,
-    db: AsyncSession = Depends(get_async_session)
-):
-    pass
-
-
-@router_app.post(
-    '/skills/',
-    response_model=SkillGetSchema
-)
-async def post_skill(
-    skill: SkillCreateSchema,
-    db: AsyncSession = Depends(get_async_session)
-):
-    res = await create_skill(db, skill)
-    return res
-
-
-=======
-  
->>>>>>> cdb9752fd6b1e226e5daead3c7a00011e892c264
 @router_app.post(
     '/work-format/',
     response_model=WorkFormatGetSchema
