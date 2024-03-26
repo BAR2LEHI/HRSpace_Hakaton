@@ -29,16 +29,15 @@ mock.patch('fastapi_cache.decorator.cache', mock_cache).start()
 from src.database import Base, get_async_session
 from src.main import app
 
+
 TEST_DATABASE_URL = (
     f'postgresql+asyncpg:/'
     f'/{DB_USER_TEST}:{DB_PASS_TEST}@{DB_HOST_TEST}:'
     f'{DB_PORT_TEST}/{DB_NAME_TEST}'
 )
 
-# Создаём асинхронный движок на основе которого будут создаваться сессии для работы с БД
 engine_test = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool)
 
-# Класс sessionmaker'а, который будет отдавать нам асинхронную сессию для подключения к БД
 async_session_maker = sessionmaker(engine_test, class_=AsyncSession,
                                    expire_on_commit=False)
 
@@ -51,8 +50,6 @@ async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 app.dependency_overrides[get_async_session] = override_get_async_session
-
-
 
 
 @pytest.fixture(scope='session')
