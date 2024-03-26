@@ -1,0 +1,4 @@
+requests
+pandas
+config
+redis==4.6.0
