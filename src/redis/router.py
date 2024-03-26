@@ -29,7 +29,7 @@ async def get_directory_skills():
 
 @directory_router.get(
     '/job-titles/',
-    response_model=Dict
+    response_model=List[str]
 )
 @cache(expire=360)
 async def get_directory_job_title():
@@ -61,10 +61,5 @@ async def get_directory_specialization():
     '/load_data/'
 )
 async def load_data():
-    try:
-        await load_data_to_redis()
-    except:
-        raise NoConnectionWithRedis(
-            name='Нет соединения с Redis'
-        )
+    await load_data_to_redis()
     return {'detail': 'Данные успешно загружены'}
