@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .exceptions import NoApplicationExist
+
 from .models import Application, Condition, EmploymentStyle, Skill, WorkFormat
 from .schemas import (ApplicationCreateSchema, ConditionCreateSchema,
                       EmploymentStyleCreateSchema, SkillCreateSchema,
@@ -32,8 +33,10 @@ async def create_work_format(db: AsyncSession,
     return new_work_format
 
 
-async def create_employment_style(db: AsyncSession,
-                                  employment_style: EmploymentStyleCreateSchema):
+async def create_employment_style(
+        db: AsyncSession,
+        employment_style: EmploymentStyleCreateSchema
+):
     """Тех. util для создания вида занятости"""
     new_emp_style = EmploymentStyle(
         **employment_style.model_dump()
@@ -44,10 +47,10 @@ async def create_employment_style(db: AsyncSession,
 
 
 async def get_skills(db: AsyncSession,
-                    skill_names: List[SkillCreateSchema]):
+                     skill_names: List[SkillCreateSchema]):
     """Получение скиллов по переданному списку их наименований"""
     names = [
-        skill['name'] for skill 
+        skill['name'] for skill
         in skill_names
     ]
     stmt = select(
@@ -72,10 +75,9 @@ async def get_work_format(db: AsyncSession,
     return res.scalars().all()
 
 
-async def get_employment_style(db: AsyncSession,
-                               empl_style_names: List[
-                                   EmploymentStyleCreateSchema
-                                ]):
+async def get_employment_style(
+        db: AsyncSession, empl_style_names: List[EmploymentStyleCreateSchema]
+):
     """Получение видов занятости соискателя"""
     empl_stl_names = [emp['name'] for emp in empl_style_names]
     stmt = select(
@@ -108,7 +110,7 @@ async def get_or_create_skill(db: AsyncSession,
     ]
     tasks = [
         create_skill(db, skill_name['name'])
-        for skill_name in skill_names 
+        for skill_name in skill_names
         if skill_name['name'] not in existing_skills_names
     ]
     created_skills = await asyncio.gather(*tasks)

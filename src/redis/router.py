@@ -13,11 +13,12 @@ directory_router = APIRouter()
 
 
 @directory_router.get(
-    '/skills/', 
+    '/skills/',
     response_model=List[str]
 )
 @cache(expire=360)
 async def get_directory_skills():
+    """Роутер получения скиллов"""
     try:
         skills_names = await redis.get('skills')
     except:
@@ -28,11 +29,12 @@ async def get_directory_skills():
 
 
 @directory_router.get(
-    '/job-titles/', 
+    '/job-titles/',
     response_model=List[str]
 )
 @cache(expire=360)
 async def get_directory_job_title():
+    """Роутер получения названий работы"""
     try:
         job_titles = await redis.get('job_titles')
     except:
@@ -43,11 +45,12 @@ async def get_directory_job_title():
 
 
 @directory_router.get(
-    '/specializations/', 
+    '/specializations/',
     response_model=List[str]
 )
 @cache(expire=360)
 async def get_directory_specialization():
+    """Роутер получения специализации"""
     try:
         specs = await redis.get('specialization')
     except:
@@ -61,5 +64,6 @@ async def get_directory_specialization():
     '/load_data/'
 )
 async def load_data():
+    """Роутер загрузки данных"""
     await load_data_to_redis()
     return {'detail': 'Данные успешно загружены'}
