@@ -31,7 +31,6 @@ async def test_add_employment_style():
                 'Вид занятости не был добавлен')
 
 
-
 async def test_add_condition():
     async with async_session_maker() as session:
         stmt = insert(Condition).values(id=1, name='fitness')
