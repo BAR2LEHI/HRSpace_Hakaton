@@ -107,14 +107,12 @@ async def no_applications_handler(request: Request, exc: NoApplicationsExist):
         }
     )
 
+models_to_admin = [
+    UserAdmin, SkillAdmin, AppSkillAdmin,
+    ConditionAdmin, WorkFormatAdmin, EmploymentStyleAdmin,
+    AppFormatAdmin, AppConditionAdmin, AppEmploymentAdmin,
+    ApplicationAdmin
+]
 
-admin.add_view(UserAdmin)
-admin.add_view(SkillAdmin)
-admin.add_view(AppSkillAdmin)
-admin.add_view(ConditionAdmin)
-admin.add_view(WorkFormatAdmin)
-admin.add_view(EmploymentStyleAdmin)
-admin.add_view(AppFormatAdmin)
-admin.add_view(AppConditionAdmin)
-admin.add_view(AppEmploymentAdmin)
-admin.add_view(ApplicationAdmin)
+for model in models_to_admin:
+    admin.add_view(model)

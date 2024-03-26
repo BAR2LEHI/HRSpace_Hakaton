@@ -13,7 +13,6 @@ from .utils import (create_application, create_employment_style, create_skill,
                     create_work_format, get_app_by_id, get_applications_db)
 from .exceptions import NoApplicationExist, NoApplicationsExist
 
-
 router_app = APIRouter()
 
 
@@ -24,8 +23,9 @@ router_app = APIRouter()
 )
 @cache(expire=360)
 async def get_applications(
-    db: AsyncSession = Depends(get_async_session),
+        db: AsyncSession = Depends(get_async_session),
 ):
+    """Роутер получения заявок"""
     all_apps = await get_applications_db(db)
     if not all_apps:
         raise NoApplicationsExist()
@@ -39,9 +39,10 @@ async def get_applications(
 )
 @cache(expire=360)
 async def get_one_application(
-    app_id: int,
-    db: AsyncSession = Depends(get_async_session)
+        app_id: int,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер получения заявки по id"""
     app = await get_app_by_id(db, app_id)
     if not app:
         raise NoApplicationExist(app_id)
@@ -54,9 +55,10 @@ async def get_one_application(
     status_code=status.HTTP_201_CREATED
 )
 async def post_application(
-    app: ApplicationCreateSchema,
-    db: AsyncSession = Depends(get_async_session)
+        app: ApplicationCreateSchema,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер создания заявки"""
     new_app = await create_application(db, app)
     return new_app
 
@@ -65,9 +67,10 @@ async def post_application(
     '/{app_id}/'
 )
 async def delete_application(
-    app_id: int,
-    db: AsyncSession = Depends(get_async_session)
+        app_id: int,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер удаления заявки"""
     pass
 
 
@@ -77,9 +80,10 @@ async def delete_application(
     status_code=status.HTTP_201_CREATED
 )
 async def edit_application(
-    app_id: int,
-    db: AsyncSession = Depends(get_async_session)
+        app_id: int,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер изменения заявки"""
     pass
 
 
@@ -88,9 +92,10 @@ async def edit_application(
     response_model=SkillGetSchema
 )
 async def post_skill(
-    skill: SkillCreateSchema,
-    db: AsyncSession = Depends(get_async_session)
+        skill: SkillCreateSchema,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер добавления скилла"""
     res = await create_skill(db, skill)
     return res
 
@@ -100,9 +105,10 @@ async def post_skill(
     response_model=WorkFormatGetSchema
 )
 async def post_work_format(
-    work_format: WorkFormatCreateSchema,
-    db: AsyncSession = Depends(get_async_session)
+        work_format: WorkFormatCreateSchema,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер добавления формата работы"""
     res = await create_work_format(db, work_format)
     return res
 
@@ -112,8 +118,9 @@ async def post_work_format(
     response_model=EmploymentStyleGetSchema
 )
 async def post_employment_style(
-    employment_style: EmploymentStyleCreateSchema,
-    db: AsyncSession = Depends(get_async_session)
+        employment_style: EmploymentStyleCreateSchema,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер добавления ида занятости"""
     res = await create_employment_style(db, employment_style)
     return res

@@ -4,6 +4,7 @@ import csv
 
 
 async def load_data_to_redis():
+    """Функция загрузки данных из редиса"""
     with open(
         '../HRSpace_Hakaton/data/job_titles.csv',
         'r', newline='',

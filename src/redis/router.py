@@ -17,6 +17,7 @@ directory_router = APIRouter()
 )
 @cache(expire=360)
 async def get_directory_skills():
+    """Роутер получения скиллов"""
     skills_names = await redis.get('skills')
     return json.loads(skills_names)
 
@@ -27,6 +28,7 @@ async def get_directory_skills():
 )
 @cache(expire=360)
 async def get_directory_job_title():
+    """Роутер получения названий работы"""
     job_titles = await redis.get('job_titles')
     return json.loads(job_titles)
 
@@ -37,6 +39,7 @@ async def get_directory_job_title():
 )
 @cache(expire=360)
 async def get_directory_specialization():
+    """Роутер получения специализации"""
     specs = await redis.get('specialization')
     return json.loads(specs)
 
@@ -45,5 +48,6 @@ async def get_directory_specialization():
     '/load_data/'
 )
 async def load_data():
+    """Роутер загрузки данных"""
     await load_data_to_redis()
     return {'detail': 'Данные успешно загружены'}

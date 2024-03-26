@@ -8,12 +8,14 @@ from ..database import Base
 
 
 class RolesEnum(str, Enum):
+    """Выбор роли"""
     recruiter = 'recruiter'
     customer = 'customer'
     admin = 'admin'
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
+    """Модель пользователя"""
 
     __tablename__ = 'user'
 
