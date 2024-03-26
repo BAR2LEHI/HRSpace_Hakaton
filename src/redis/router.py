@@ -1,8 +1,7 @@
 import json
-from typing import Dict, List
+from typing import List
 
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
 from fastapi_cache.decorator import cache
 
 from ..Applications.exceptions import NoConnectionWithRedis

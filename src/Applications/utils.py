@@ -5,7 +5,6 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .exceptions import NoApplicationExist
-
 from .models import Application, Condition, EmploymentStyle, Skill, WorkFormat
 from .schemas import (ApplicationCreateSchema, ConditionCreateSchema,
                       EmploymentStyleCreateSchema, SkillCreateSchema,

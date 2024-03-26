@@ -19,8 +19,8 @@ async def load_data_to_redis():
         await redis.set('job_titles',
                         json.dumps(job_titles))
     with open(
-        '../app/data/skills.csv', 
-        'r', newline='', 
+        '../app/data/skills.csv',
+        'r', newline='',
         encoding='UTF-8'
     ) as csvfile:
         sk = csv.DictReader(csvfile,
@@ -31,8 +31,8 @@ async def load_data_to_redis():
         await redis.set('skills',
                         json.dumps(skills))
     with open(
-        '../app/data/specialization.csv', 
-        'r', newline='', 
+        '../app/data/specialization.csv',
+        'r', newline='',
         encoding='UTF-8'
     ) as csvfile:
         sp = csv.DictReader(csvfile,
