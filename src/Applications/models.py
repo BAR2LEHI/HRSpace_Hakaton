@@ -4,9 +4,9 @@ from sqlalchemy.dialects.postgresql import ENUM as pgEnum
 from sqlalchemy.orm import relationship
 
 from ..database import Base
-from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
-                    StatusEnum, TermsPaymentEnum,
-                    TypesResumeEnum, ConditionsEnum)
+from .enums import (ConditionsEnum, EmploymentEnum, ExperienceEnum, FormatEnum,
+                    PaperWorkEnum, StatusEnum, TermsPaymentEnum,
+                    TypesResumeEnum)
 
 
 class AppSkill(Base):

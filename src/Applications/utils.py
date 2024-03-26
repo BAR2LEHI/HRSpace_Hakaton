@@ -1,13 +1,13 @@
 import asyncio
 from typing import List
 
-from sqlalchemy import select, delete
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .models import Application, EmploymentStyle, Skill, WorkFormat, Condition
-from .schemas import (ApplicationCreateSchema, EmploymentStyleCreateSchema,
-                      SkillCreateSchema, WorkFormatCreateSchema,
-                      ConditionCreateSchema)
+from .models import Application, Condition, EmploymentStyle, Skill, WorkFormat
+from .schemas import (ApplicationCreateSchema, ConditionCreateSchema,
+                      EmploymentStyleCreateSchema, SkillCreateSchema,
+                      WorkFormatCreateSchema)
 
 
 async def create_skill(db: AsyncSession,

@@ -1,20 +1,16 @@
 import asyncio
-import pytest
-
 from typing import AsyncGenerator
+
+import pytest
 from httpx import AsyncClient
 from sqlalchemy import NullPool
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-
-from src.config import (
-    DB_HOST_TEST, DB_NAME_TEST, DB_PORT_TEST,
-    DB_PASS_TEST, DB_USER_TEST
-)
+from src.config import (DB_HOST_TEST, DB_NAME_TEST, DB_PASS_TEST, DB_PORT_TEST,
+                        DB_USER_TEST)
+from src.database import Base, get_async_session
 from src.main import app
-from src.database import get_async_session, Base
-
 
 TEST_DATABASE_URL = (
     f'postgresql+asyncpg:/'

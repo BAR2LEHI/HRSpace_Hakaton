@@ -1,11 +1,9 @@
 from sqladmin import ModelView
 
+from ..Applications.models import (AppCondition, AppEmployment, AppFormat,
+                                   Application, AppSkill, Condition,
+                                   EmploymentStyle, Skill, WorkFormat)
 from ..Users.models import User
-from ..Applications.models import (
-    Application, AppSkill, AppFormat,
-    AppCondition, AppEmployment, Skill,
-    Condition, WorkFormat, EmploymentStyle
-)
 
 
 class UserAdmin(ModelView, model=User):

@@ -1,6 +1,7 @@
-from .redis import redis
-import json
 import csv
+import json
+
+from .redis import redis
 
 
 async def load_data_to_redis():

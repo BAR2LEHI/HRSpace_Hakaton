@@ -7,7 +7,6 @@ from fastapi_cache.decorator import cache
 from .redis import redis
 from .utils import load_data_to_redis
 
-
 directory_router = APIRouter()
 
 
