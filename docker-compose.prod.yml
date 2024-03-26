@@ -12,7 +12,7 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    image: lordrie/backend11
+    image: lordrie/backend
     container_name: backend_app
     env_file: .env
     depends_on:
