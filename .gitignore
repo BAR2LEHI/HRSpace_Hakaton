@@ -3,7 +3,7 @@ __pycache__/
 *$py.class
 
 *.so
-versions/
+versions/*
 
 .Python
 build/
@@ -84,7 +84,7 @@ ENV/
 env.bak/
 venv.bak/
 
-migrations/versions/*
+
 
 .idea
 .pytest_cache
