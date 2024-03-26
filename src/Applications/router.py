@@ -6,14 +6,17 @@ from fastapi_cache.decorator import cache
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import get_async_session
+
 from .exceptions import NoApplicationExist
+
 from .schemas import (ApplicationCreateSchema, ApplicationGetSchema,
                       EmploymentStyleCreateSchema, EmploymentStyleGetSchema,
-                      SkillCreateSchema, SkillGetSchema,
                       WorkFormatCreateSchema, WorkFormatGetSchema)
-from .utils import (create_application, create_employment_style, create_skill,
+
+from .utils import (create_application, create_employment_style,
                     create_work_format, delete_app, get_app_by_id,
                     get_applications_db)
+
 
 router_app = APIRouter()
 
@@ -25,8 +28,9 @@ router_app = APIRouter()
 )
 @cache(expire=360)
 async def get_applications(
-    db: AsyncSession = Depends(get_async_session),
+        db: AsyncSession = Depends(get_async_session),
 ):
+    """Роутер получения заявок"""
     all_apps = await get_applications_db(db)
     if not all_apps:
         raise NoApplicationExist(
@@ -42,9 +46,10 @@ async def get_applications(
 )
 @cache(expire=360)
 async def get_one_application(
-    app_id: int,
-    db: AsyncSession = Depends(get_async_session)
+        app_id: int,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер получения заявки по id"""
     app = await get_app_by_id(db, app_id)
     if not app:
         raise NoApplicationExist(
@@ -59,20 +64,23 @@ async def get_one_application(
     status_code=status.HTTP_201_CREATED
 )
 async def post_application(
-    app: ApplicationCreateSchema,
-    db: AsyncSession = Depends(get_async_session)
+        app: ApplicationCreateSchema,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер создания заявки"""
     new_app = await create_application(db, app)
     return new_app
 
 
 @router_app.delete(
-    '/{app_id}/'
+    '/{app_id}/',
+    status_code=status.HTTP_204_NO_CONTENT
 )
 async def delete_application(
-    app_id: int,
-    db: AsyncSession = Depends(get_async_session)
+        app_id: int,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер удаления заявки"""
     await delete_app(db, app_id)
     return JSONResponse(content={
         'detail': f'Заявка с id={app_id} успешно удалена'
@@ -84,9 +92,10 @@ async def delete_application(
     response_model=WorkFormatGetSchema
 )
 async def post_work_format(
-    work_format: WorkFormatCreateSchema,
-    db: AsyncSession = Depends(get_async_session)
+        work_format: WorkFormatCreateSchema,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер добавления формата работы"""
     res = await create_work_format(db, work_format)
     return res
 
@@ -96,8 +105,9 @@ async def post_work_format(
     response_model=EmploymentStyleGetSchema
 )
 async def post_employment_style(
-    employment_style: EmploymentStyleCreateSchema,
-    db: AsyncSession = Depends(get_async_session)
+        employment_style: EmploymentStyleCreateSchema,
+        db: AsyncSession = Depends(get_async_session)
 ):
+    """Роутер добавления ида занятости"""
     res = await create_employment_style(db, employment_style)
     return res

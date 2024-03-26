@@ -16,12 +16,12 @@ class AppSkill(Base):
 
     application_id = Column(
         Integer,
-        ForeignKey('application.id', ondelete='CASCADE'),
+        ForeignKey('application.id'),
         primary_key=True
     )
     skill_id = Column(
         Integer,
-        ForeignKey('skill.id', ondelete='CASCADE'),
+        ForeignKey('skill.id'),
         primary_key=True
     )
 
@@ -33,13 +33,13 @@ class AppFormat(Base):
 
     application_id = Column(
         Integer,
-        ForeignKey('application.id', ondelete='CASCADE'),
+        ForeignKey('application.id'),
         primary_key=True
     )
     format_id = Column(
         Integer,
-        ForeignKey('work_format.id', ondelete='CASCADE'),
-        primary_key=True,
+        ForeignKey('work_format.id'),
+        primary_key=True
     )
 
 
@@ -50,12 +50,12 @@ class AppEmployment(Base):
 
     application_id = Column(
         Integer,
-        ForeignKey('application.id', ondelete='CASCADE'),
-        primary_key=True,
+        ForeignKey('application.id'),
+        primary_key=True
     )
     employment_id = Column(
         Integer,
-        ForeignKey('employment.id', ondelete='CASCADE'),
+        ForeignKey('employment.id'),
         primary_key=True
     )
 
@@ -72,7 +72,7 @@ class AppCondition(Base):
     )
     application_id = Column(
         Integer,
-        ForeignKey('application.id', ondelete='CASCADE'),
+        ForeignKey('application.id'),
         primary_key=True
     )
 

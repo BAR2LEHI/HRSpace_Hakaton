@@ -4,6 +4,7 @@ from fastapi_users import schemas
 
 
 class UserRead(schemas.BaseUser[int]):
+    """Схема для получения пользователя"""
     id: int
     first_name: str
     last_name: str
@@ -18,6 +19,7 @@ class UserRead(schemas.BaseUser[int]):
 
 
 class UserCreate(schemas.BaseUserCreate):
+    """Схема для создания пользователя"""
     first_name: str
     last_name: str
     email: str

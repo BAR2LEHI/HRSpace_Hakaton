@@ -72,7 +72,9 @@ class ApplicationBaseSchema(BaseModel):
     @model_validator(mode='after')
     def check_salary_up(self):
         if self.salary_from > self.salary_up_to:
-            raise ValueError('Максимальная планка зарплаты не может быть больше минимальной')
+            raise ValueError(
+                'Максимальная планка зарплаты не может быть больше минимальной'
+            )
         return self
 
 

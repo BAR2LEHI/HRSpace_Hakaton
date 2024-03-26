@@ -12,7 +12,9 @@ from .Admin.models import (AppConditionAdmin, AppEmploymentAdmin,
                            AppFormatAdmin, ApplicationAdmin, AppSkillAdmin,
                            ConditionAdmin, EmploymentStyleAdmin, SkillAdmin,
                            UserAdmin, WorkFormatAdmin)
+
 from .Applications.exceptions import NoApplicationExist, NoConnectionWithRedis
+
 from .Applications.router import router_app
 from .database import engine
 from .redis.redis import redis
@@ -50,7 +52,9 @@ app = FastAPI(
 )
 
 
-admin = Admin(app, engine=engine, authentication_backend=authentication_backend)
+admin = Admin(
+    app, engine=engine, authentication_backend=authentication_backend
+)
 
 
 app.add_middleware(
@@ -109,14 +113,12 @@ async def no_connect_with_redis_handler(
         }
     )
 
+models_to_admin = [
+    UserAdmin, SkillAdmin, AppSkillAdmin,
+    ConditionAdmin, WorkFormatAdmin, EmploymentStyleAdmin,
+    AppFormatAdmin, AppConditionAdmin, AppEmploymentAdmin,
+    ApplicationAdmin
+]
 
-admin.add_view(UserAdmin)
-admin.add_view(SkillAdmin)
-admin.add_view(AppSkillAdmin)
-admin.add_view(ConditionAdmin)
-admin.add_view(WorkFormatAdmin)
-admin.add_view(EmploymentStyleAdmin)
-admin.add_view(AppFormatAdmin)
-admin.add_view(AppConditionAdmin)
-admin.add_view(AppEmploymentAdmin)
-admin.add_view(ApplicationAdmin)
+for model in models_to_admin:
+    admin.add_view(model)

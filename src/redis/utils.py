@@ -5,6 +5,7 @@ from .redis import redis
 
 
 async def load_data_to_redis():
+    """Функция загрузки данных из редиса"""
     with open(
         '../app/data/job_titles.csv',
         'r', newline='',
@@ -18,8 +19,13 @@ async def load_data_to_redis():
         await redis.set('job_titles',
                         json.dumps(job_titles))
     with open(
+<<<<<<< HEAD
         '../app/data/skills.csv',
         'r', newline='',
+=======
+        '../app/data/skills.csv', 
+        'r', newline='', 
+>>>>>>> dfa82200a681b7fa2968eb096b3dfec7d5dbe342
         encoding='UTF-8'
     ) as csvfile:
         sk = csv.DictReader(csvfile,
@@ -30,8 +36,13 @@ async def load_data_to_redis():
         await redis.set('skills',
                         json.dumps(skills))
     with open(
+<<<<<<< HEAD
         '../app/data/specialization.csv',
         'r', newline='',
+=======
+        '../app/data/specialization.csv', 
+        'r', newline='', 
+>>>>>>> dfa82200a681b7fa2968eb096b3dfec7d5dbe342
         encoding='UTF-8'
     ) as csvfile:
         sp = csv.DictReader(csvfile,
