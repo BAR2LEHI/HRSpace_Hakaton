@@ -24,7 +24,7 @@ async def get_directory_skills():
         raise NoConnectionWithRedis(
             name='Нет соединения с Redis'
         )
-    return {'skills': json.loads(skills_names)}
+    return json.loads(skills_names)
 
 
 @directory_router.get(
@@ -54,7 +54,7 @@ async def get_directory_specialization():
         raise NoConnectionWithRedis(
             name='Нет соединения с Redis'
         )
-    return {'specializations': json.loads(specs)}
+    return json.loads(specs)
 
 
 @directory_router.post(
