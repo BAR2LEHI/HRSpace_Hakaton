@@ -67,7 +67,7 @@ alembic upgrade head
 ```
 - Запустить проект:
 ```
-uvicorn src.main:app --uvicorn
+uvicorn src.main:app --reload
 ```
 
 ### Запуск Docker:
