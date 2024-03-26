@@ -18,8 +18,8 @@ router_app = APIRouter()
 
 
 @router_app.get(
-    '/', 
-    response_model=List[ApplicationGetSchema], 
+    '/',
+    response_model=List[ApplicationGetSchema],
     status_code=status.HTTP_200_OK
 )
 @cache(expire=360)
@@ -33,8 +33,8 @@ async def get_applications(
 
 
 @router_app.get(
-    '/{app_id}/', 
-    response_model=ApplicationGetSchema, 
+    '/{app_id}/',
+    response_model=ApplicationGetSchema,
     status_code=status.HTTP_200_OK
 )
 @cache(expire=360)
@@ -70,9 +70,10 @@ async def delete_application(
 ):
     pass
 
+
 @router_app.put(
-    '/{app_id}/', 
-    response_model=ApplicationGetSchema, 
+    '/{app_id}/',
+    response_model=ApplicationGetSchema,
     status_code=status.HTTP_201_CREATED
 )
 async def edit_application(
@@ -93,7 +94,7 @@ async def post_skill(
     res = await create_skill(db, skill)
     return res
 
-  
+
 @router_app.post(
     '/work-format/',
     response_model=WorkFormatGetSchema

@@ -4,8 +4,7 @@ from starlette.requests import Request
 
 class AdminAuth(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
-        form = await request.form()
-        username, password = form["username"], form["password"]
+        await request.form()
 
         request.session.update({"token": "..."})
 

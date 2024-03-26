@@ -3,7 +3,6 @@ from enum import Enum
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.dialects.postgresql import ENUM as pgEnum
-from sqlalchemy.orm import mapped_column
 
 from ..database import Base
 

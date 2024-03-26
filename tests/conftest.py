@@ -3,6 +3,7 @@ import pytest
 
 from typing import AsyncGenerator
 from httpx import AsyncClient
+from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
@@ -16,15 +17,19 @@ from src.database import get_async_session, Base
 
 
 TEST_DATABASE_URL = (
-    f'postgresql+asyncpg://{DB_USER_TEST}:{DB_PASS_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}'
+    f'postgresql+asyncpg:/'
+    f'/{DB_USER_TEST}:{DB_PASS_TEST}@{DB_HOST_TEST}:'
+    f'{DB_PORT_TEST}/{DB_NAME_TEST}'
 )
 
-# Создаём асинхронный движок на основе которого будут создаваться сессии для работы с БД
-engine_test = create_async_engine(TEST_DATABASE_URL)
+# Создаём асинхронный движок на основе которого
+# будут создаваться сессии для работы с БД
+engine_test = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool)
 
-# Класс sessionmaker'а, который будет отдавать нам асинхронную сессию для подключения к БД
+# Класс sessionmaker'а, который будет отдавать
+# нам асинхронную сессию для подключения к БД
 async_session = sessionmaker(engine_test, class_=AsyncSession,
-                                   expire_on_commit=False)
+                             expire_on_commit=False)
 metadata = Base.metadata
 metadata.bind = engine_test
 
@@ -53,6 +58,6 @@ def event_loop(request):
 
 
 @pytest.fixture(scope='session')
-async def client() -> AsyncGenerator[AsyncClient, None]:
-    async with AsyncClient(app=app, base_url='http://test') as client:
-        yield client
+async def ac() -> AsyncGenerator[AsyncClient, None]:
+    async with AsyncClient(app=app, base_url='http://test') as ac:
+        yield ac

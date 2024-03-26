@@ -45,7 +45,6 @@ class AppSkillAdmin(ModelView, model=AppSkill):
     column_list = '__all__'
 
 
-
 class AppFormatAdmin(ModelView, model=AppFormat):
     category = 'applications'
     can_create = False

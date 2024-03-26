@@ -87,3 +87,4 @@ venv.bak/
 migrations/versions
 
 .idea
+.pytest_cache

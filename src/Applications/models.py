@@ -15,13 +15,13 @@ class AppSkill(Base):
     __tablename__ = 'skill_to_application'
 
     application_id = Column(
-        Integer, 
-        ForeignKey('application.id'), 
+        Integer,
+        ForeignKey('application.id'),
         primary_key=True
     )
     skill_id = Column(
-        Integer, 
-        ForeignKey('skill.id'), 
+        Integer,
+        ForeignKey('skill.id'),
         primary_key=True
     )
 
@@ -32,13 +32,13 @@ class AppFormat(Base):
     __tablename__ = 'format_to_application'
 
     application_id = Column(
-        Integer, 
-        ForeignKey('application.id'), 
+        Integer,
+        ForeignKey('application.id'),
         primary_key=True
     )
     format_id = Column(
-        Integer, 
-        ForeignKey('work_format.id'), 
+        Integer,
+        ForeignKey('work_format.id'),
         primary_key=True
     )
 
@@ -49,13 +49,13 @@ class AppEmployment(Base):
     __tablename__ = 'employment_to_application'
 
     application_id = Column(
-        Integer, 
-        ForeignKey('application.id'), 
+        Integer,
+        ForeignKey('application.id'),
         primary_key=True
     )
     employment_id = Column(
-        Integer, 
-        ForeignKey('employment.id'), 
+        Integer,
+        ForeignKey('employment.id'),
         primary_key=True
     )
 
@@ -71,8 +71,8 @@ class AppCondition(Base):
         primary_key=True
     )
     application_id = Column(
-        Integer, 
-        ForeignKey('application.id'), 
+        Integer,
+        ForeignKey('application.id'),
         primary_key=True
     )
 
@@ -216,7 +216,7 @@ class Condition(Base):
     )
     name = Column(
         pgEnum(ConditionsEnum),
-        unique=True, 
+        unique=True,
         nullable=False
     )
 
@@ -230,13 +230,13 @@ class Skill(Base):
     __tablename__ = 'skill'
 
     id = Column(
-        Integer, 
-        primary_key=True, 
+        Integer,
+        primary_key=True,
         unique=True
     )
     name = Column(
-        String, 
-        unique=True, 
+        String,
+        unique=True,
         nullable=False
     )
 
@@ -250,13 +250,13 @@ class WorkFormat(Base):
     __tablename__ = 'work_format'
 
     id = Column(
-        Integer, 
-        primary_key=True, 
+        Integer,
+        primary_key=True,
         unique=True
     )
     title = Column(
-        pgEnum(FormatEnum), 
-        nullable=False, 
+        pgEnum(FormatEnum),
+        nullable=False,
         unique=True
     )
 
@@ -270,13 +270,13 @@ class EmploymentStyle(Base):
     __tablename__ = 'employment'
 
     id = Column(
-        Integer, 
-        primary_key=True, 
+        Integer,
+        primary_key=True,
         unique=True
     )
     name = Column(
-        pgEnum(EmploymentEnum), 
-        nullable=True, 
+        pgEnum(EmploymentEnum),
+        nullable=True,
         unique=True
     )
 

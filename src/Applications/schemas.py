@@ -3,8 +3,9 @@ from typing import Annotated, List, Optional
 
 from pydantic import BaseModel, conint, model_validator
 
-from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum, PaperWorkEnum,
-                    TermsPaymentEnum, TypesResumeEnum, ConditionsEnum, StatusEnum)
+from .enums import (EmploymentEnum, ExperienceEnum, FormatEnum,
+                    PaperWorkEnum, TermsPaymentEnum, TypesResumeEnum,
+                    ConditionsEnum, StatusEnum)
 
 
 class SkillCreateSchema(BaseModel):
@@ -71,7 +72,9 @@ class ApplicationBaseSchema(BaseModel):
     @model_validator(mode='after')
     def check_salary_up(self):
         if self.salary_from > self.salary_up_to:
-            raise ValueError('Максимальная планка зарплаты не может быть больше минимальной')
+            raise ValueError(
+                'Максимальная планка зарплаты не может быть больше минимальной'
+            )
         return self
 
 

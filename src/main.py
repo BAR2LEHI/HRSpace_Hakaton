@@ -22,10 +22,11 @@ from .Admin.models import (
     AppEmploymentAdmin, ApplicationAdmin
 )
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     FastAPICache.init(
-        RedisBackend(redis), 
+        RedisBackend(redis),
         prefix='fastapi-cache'
     )
     yield
@@ -51,7 +52,9 @@ app = FastAPI(
 )
 
 
-admin = Admin(app, engine=engine, authentication_backend=authentication_backend)
+admin = Admin(
+    app, engine=engine, authentication_backend=authentication_backend
+)
 
 
 app.add_middleware(
@@ -90,7 +93,7 @@ async def no_application_handler(request: Request, exc: NoApplicationExist):
     return JSONResponse(
         status_code=404,
         content={
-            'detail':f'Заявки с id={exc.id} не существует.' 
+            'detail': f'Заявки с id={exc.id} не существует.'
         }
     )
 
@@ -100,7 +103,7 @@ async def no_applications_handler(request: Request, exc: NoApplicationsExist):
     return JSONResponse(
         status_code=404,
         content={
-            'detail':'В базе данных ещё нет заявок.' 
+            'detail': 'В базе данных ещё нет заявок.'
         }
     )
 
