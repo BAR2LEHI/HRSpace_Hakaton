@@ -12,9 +12,7 @@ from .Admin.models import (AppConditionAdmin, AppEmploymentAdmin,
                            AppFormatAdmin, ApplicationAdmin, AppSkillAdmin,
                            ConditionAdmin, EmploymentStyleAdmin, SkillAdmin,
                            UserAdmin, WorkFormatAdmin)
-
 from .Applications.exceptions import NoApplicationExist, NoConnectionWithRedis
-
 from .Applications.router import router_app
 from .database import engine
 from .redis.redis import redis
